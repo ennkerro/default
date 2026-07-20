@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%92%3C/text%3E%3C/svg%3E" />
+<title>Admin · Kukonharjun Vibe-analyysi</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="app">
+
+  <section class="view active" id="view-admin-main">
+    <div class="admin-header">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Admin-paneeli</div>
+        <h2>Kukonharjun Vibe-analyysi</h2>
+      </div>
+      <button class="btn btn-danger" id="btn-reset" style="width:auto;padding:10px 16px;">Nollaa</button>
+    </div>
+
+    <div class="card qr-box">
+      <img id="qr-image" alt="QR-koodi osallistumislinkkiin" />
+      <div class="admin-url-hint" id="participant-url">-</div>
+    </div>
+
+    <div class="metric-card">
+      <div>
+        <div class="metric-label">Vastanneet osallistujat</div>
+        <div class="metric-value" id="admin-counter">0 / 0</div>
+      </div>
+    </div>
+
+    <div class="section-title">Osallistujat</div>
+    <ul class="participant-list" id="participant-list"></ul>
+
+    <div class="section-title">Joukkueiden muodostus</div>
+    <button class="btn btn-primary" id="btn-form-teams" disabled>Muodosta joukkueet</button>
+    <p style="font-size:0.8rem;margin-top:10px;">
+      Tarvitaan vähintään kaksi vastannutta. Joukkueita muodostuu neljä kappaletta,
+      mahdollisimman samanhenkisistä vastaajista - ei tasakokoisista.
+    </p>
+  </section>
+
+  <section class="view" id="view-admin-calculating">
+    <div class="center-col" id="admin-calc-container"></div>
+  </section>
+
+  <section class="view" id="view-admin-results">
+    <div class="admin-header">
+      <div class="eyebrow"><span class="dot"></span> Joukkueet muodostettu</div>
+      <button class="btn btn-ghost" id="btn-back-to-admin" style="width:auto;padding:10px 16px;">&larr; Hallintaan</button>
+    </div>
+    <div id="admin-results-container"></div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/teams-reveal.js"></script>
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

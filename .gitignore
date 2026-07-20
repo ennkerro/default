@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Runtime data (generated at runtime, never committed)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+admin_secret.txt
+
+# OS
+.DS_Store
