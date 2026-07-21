@@ -91,9 +91,19 @@
     views[el.id] = el;
   });
 
+  // Laskenta- ja tulosnaytolla kaytetaan tummempaa "oraakkeli"-teemaa -
+  // vaihto tehdaan yhdessa paikassa (showView), jotta jokainen reitti
+  // nakymaan (palautuminen sivun paivityksesta, WS-paljastus, jne.)
+  // paatyy aina oikeaan teemaan eika teema paase jaamaan vaaraksi.
+  const ORACLE_VIEWS = new Set(["view-calculating", "view-results"]);
+  const metaThemeColor = document.getElementById("meta-theme-color");
+
   function showView(id) {
     Object.values(views).forEach((el) => el.classList.remove("active"));
     views[id].classList.add("active");
+    const isOracle = ORACLE_VIEWS.has(id);
+    document.body.classList.toggle("theme-oracle", isOracle);
+    if (metaThemeColor) metaThemeColor.setAttribute("content", isOracle ? "#0d0b1c" : "#6c5ce7");
     window.scrollTo(0, 0);
   }
 

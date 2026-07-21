@@ -17,6 +17,11 @@
   --color-danger: #ff6b6b;
   --color-card: #ffffff;
   --color-border: #eae6f7;
+  --color-diagnosis-ink: #067a63;
+  --color-chip-bg: var(--color-primary-soft);
+  --color-chip-text: var(--color-primary-dark);
+  --color-ring-glow: rgba(108, 92, 231, 0.35);
+  --color-toast-bg: #1c1730;
   --shadow-soft: 0 10px 40px rgba(76, 58, 168, 0.12);
   --shadow-button: 0 8px 20px rgba(108, 92, 231, 0.35);
   --radius-lg: 28px;
@@ -45,6 +50,7 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 /* Pehmeat, hieman sumeat taustapallot - antaa "moderni tekoalytuote" -fiiliksen. */
@@ -56,6 +62,7 @@ body::after {
   filter: blur(60px);
   z-index: 0;
   pointer-events: none;
+  transition: background 0.6s ease;
 }
 
 body::before {
@@ -76,6 +83,42 @@ body::after {
   bottom: -15%;
   right: -25%;
   background: radial-gradient(circle, rgba(0, 201, 167, 0.2), transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   "Oraakkeli"-tila - tummempi, mystisempi teema laskenta- ja tulosnaytolle.
+   Sama rakenne, samat komponentit ja muodot kuin muualla sovelluksessa -
+   vain varit ja hehku vaihtuvat paljastushetken ajaksi omaksi CSS-muuttuja-
+   joukokseen kytkettyna, jotta sovellus ei ala tuntua kahdelta eri tuotteelta.
+   -------------------------------------------------------------------------- */
+
+body.theme-oracle {
+  --color-bg: #0d0b1c;
+  --color-bg-solid: #15122a;
+  --color-text: #f3f0ff;
+  --color-text-soft: #b6aede;
+  --color-text-faint: #8a83ad;
+  --color-primary: #9d8cf7;
+  --color-primary-dark: #6c5ce7;
+  --color-primary-soft: rgba(157, 140, 247, 0.16);
+  --color-accent: #2de2c1;
+  --color-accent-soft: rgba(45, 226, 193, 0.14);
+  --color-card: #171432;
+  --color-border: rgba(157, 140, 247, 0.24);
+  --color-diagnosis-ink: #7cf3d4;
+  --color-chip-bg: rgba(157, 140, 247, 0.22);
+  --color-chip-text: #ece7ff;
+  --color-ring-glow: rgba(157, 140, 247, 0.65);
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 50px rgba(108, 92, 231, 0.18);
+  --shadow-button: 0 10px 28px rgba(157, 140, 247, 0.45);
+}
+
+body.theme-oracle::before {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 70%);
+}
+
+body.theme-oracle::after {
+  background: radial-gradient(circle, rgba(45, 226, 193, 0.3), transparent 70%);
 }
 
 #app {
@@ -563,12 +606,81 @@ button {
 }
 
 .member-chip {
-  background: var(--color-primary-soft);
-  color: var(--color-primary-dark);
+  background: var(--color-chip-bg);
+  color: var(--color-chip-text);
   font-weight: 700;
   font-size: 0.9rem;
   padding: 7px 14px;
   border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   Yhteensopivuusrengas - joukkuekortin oma "oraakkelin lukema"
+   -------------------------------------------------------------------------- */
+
+.compat-ring {
+  position: relative;
+  width: 136px;
+  height: 136px;
+  margin: 2px auto 24px;
+}
+
+.compat-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 10px var(--color-ring-glow));
+}
+
+.compat-ring-track {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 9;
+}
+
+.compat-ring-fill {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 9;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.compat-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.compat-ring-number {
+  line-height: 1;
+}
+
+.compat-ring-value {
+  font-family: var(--font-mono);
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.compat-ring-sign {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-left: 1px;
+}
+
+.compat-ring-caption {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin-top: 3px;
 }
 
 .reasons-heading {
@@ -610,7 +722,7 @@ button {
   padding: 14px 16px;
   font-size: 0.88rem;
   font-style: italic;
-  color: #067a63;
+  color: var(--color-diagnosis-ink);
   text-align: left;
   line-height: 1.5;
 }
@@ -821,7 +933,7 @@ button {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  background: var(--color-text);
+  background: var(--color-toast-bg);
   color: #fff;
   padding: 12px 20px;
   border-radius: 999px;

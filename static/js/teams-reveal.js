@@ -82,11 +82,44 @@ function runCalculationAnimation(container, onComplete) {
   showNext();
 }
 
+const COMPAT_RING_RADIUS = 42;
+const COMPAT_RING_CIRCUMFERENCE = 2 * Math.PI * COMPAT_RING_RADIUS;
+
+/**
+ * Animoi yhteensopivuusrenkaan taytymisen seka numeron laskemisen ylospain
+ * nollasta - "oraakkeli laskee lukemaa auki" -tunnelma paljastushetkelle.
+ */
+function animateCompatRing(cardEl, percent) {
+  const fillCircle = cardEl.querySelector(".compat-ring-fill");
+  const valueEl = cardEl.querySelector(".compat-ring-value");
+  if (!fillCircle || !valueEl) return;
+
+  const circumference = COMPAT_RING_CIRCUMFERENCE;
+  fillCircle.style.strokeDasharray = `${circumference}`;
+  fillCircle.style.strokeDashoffset = `${circumference}`;
+  void fillCircle.getBoundingClientRect(); // pakota reflow ennen transitionin laukaisua
+
+  requestAnimationFrame(() => {
+    fillCircle.style.strokeDashoffset = `${circumference * (1 - percent / 100)}`;
+  });
+
+  const durationMs = 1100;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / durationMs);
+    const eased = 1 - Math.pow(1 - t, 3);
+    valueEl.textContent = Math.round(percent * eased);
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 function renderTeamCard(team) {
   const reasonsHtml = (team.reasons || []).map((r) => `<li>${escapeHtml(r)}</li>`).join("");
   const membersHtml = (team.members || [])
     .map((m) => `<span class="member-chip">${escapeHtml(m)}</span>`)
     .join("");
+  const percent = Math.round(Math.max(0, Math.min(100, team.compatibility_percent ?? 0)));
 
   const wrapper = document.createElement("div");
   wrapper.className = "team-card";
@@ -95,10 +128,21 @@ function renderTeamCard(team) {
     <div class="team-label">Team ${team.index}</div>
     <div class="team-name">${escapeHtml(team.name)}</div>
     <div class="team-members">${membersHtml}</div>
+    <div class="compat-ring" role="img" aria-label="Yhteensopivuus ${percent} %">
+      <svg viewBox="0 0 100 100" class="compat-ring-svg">
+        <circle class="compat-ring-track" cx="50" cy="50" r="${COMPAT_RING_RADIUS}"></circle>
+        <circle class="compat-ring-fill" cx="50" cy="50" r="${COMPAT_RING_RADIUS}"></circle>
+      </svg>
+      <div class="compat-ring-label">
+        <div class="compat-ring-number"><span class="compat-ring-value">0</span><span class="compat-ring-sign">%</span></div>
+        <div class="compat-ring-caption">yhteensopivuus</div>
+      </div>
+    </div>
     <div class="reasons-heading">Miksi juuri te?</div>
     <ul class="reasons-list">${reasonsHtml}</ul>
     <div class="diagnosis-box">${escapeHtml(team.diagnosis)}</div>
   `;
+  animateCompatRing(wrapper, percent);
   return wrapper;
 }
 

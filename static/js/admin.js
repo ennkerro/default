@@ -47,9 +47,19 @@
     views[el.id] = el;
   });
 
+  // Sama tumma "oraakkeli"-teema kuin osallistujan puolella laskenta- ja
+  // tulosnaytolle - keskitetty tanne showView:iin, jotta se on aina oikein
+  // riippumatta mista reitista (bootstrap, WS-paljastus, "Hallintaan"-nappi)
+  // kyseiseen nakymaan paadytaan.
+  const ORACLE_VIEWS = new Set(["view-admin-calculating", "view-admin-results"]);
+  const metaThemeColor = document.getElementById("meta-theme-color");
+
   function showView(id) {
     Object.values(views).forEach((el) => el.classList.remove("active"));
     views[id].classList.add("active");
+    const isOracle = ORACLE_VIEWS.has(id);
+    document.body.classList.toggle("theme-oracle", isOracle);
+    if (metaThemeColor) metaThemeColor.setAttribute("content", isOracle ? "#0d0b1c" : "#6c5ce7");
   }
 
   let toastTimeout = null;

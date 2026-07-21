@@ -63,7 +63,3 @@ CLOSING_DIAGNOSES = [
 # (esim. jos joku lisaa uuden kysymyksen questions.json:iin eika muista
 # kirjoittaa sille perustelulausetta). Toimii aina kieliopillisesti.
 GENERIC_FALLBACK_TEMPLATE = '{count}/{total} valitsi saman vastauksen kysymykseen "{question}".'
-
-# Aina mukana viimeisena "perusteluna" - kaytetaan oikeaa laskettua
-# yhteensopivuusprosenttia, jotta se on aidosti dataan perustuva.
-ALGO_JUSTIFICATION_TEMPLATE = "Algoritmi havaitsi {percent} % yhteensopivuuden tämän joukkueen sisällä."

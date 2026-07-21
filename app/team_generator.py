@@ -7,7 +7,6 @@ from collections import Counter
 
 from app.clustering import compatibility_percent
 from app.content import (
-    ALGO_JUSTIFICATION_TEMPLATE,
     CLOSING_DIAGNOSES,
     GENERIC_FALLBACK_TEMPLATE,
     NAME_TEMPLATES,
@@ -126,8 +125,10 @@ def generate_teams(
         num_content_reasons = min(rng.randint(3, 4), len(scored))
         reasons = [_build_reason(entry) for entry in scored[:num_content_reasons]]
 
+        # Yhteensopivuusprosentti ei enaa toistu tekstirivina taalla - se
+        # esitetaan omana visuaalisena mittarinaan kortissa (compatibility_percent
+        # -kentan kautta), joten teksti- ja lukurivi eivat sano samaa asiaa kahdesti.
         compat = compatibility_percent(cluster, dist)
-        reasons.append(ALGO_JUSTIFICATION_TEMPLATE.format(percent=_format_percent(compat)))
 
         top_tag = scored[0]["question"]["options"][scored[0]["option_index"]]["tag"] if scored else "vibe"
         name = _generate_name(top_tag, used_names, rng)
