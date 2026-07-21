@@ -27,8 +27,14 @@ def _score_questions(
     questions: list[dict],
 ) -> list[dict]:
     """
-    Pisteyttaa jokaisen kysymyksen sen mukaan kuinka yhtenainen (konsensus)
-    ja kuinka erottuva (verrattuna muihin joukkueisiin) joukkueen vastaus on.
+    Pisteyttaa jokaisen kysymyksen sen mukaan kuinka ERITTAIN TAMAN joukkueen
+    vastaus poikkeaa muista joukkueista ("lift"), ei vain kuinka yhtenainen
+    (konsensus) joukkueen oma vastaus on. Pelkka korkea konsensus ei riita
+    hyvaksi perusteluksi, jos kaikki muutkin joukkueet vastasivat samoin
+    samaan kysymykseen - silloin kysymys ei aidosti erota tata joukkuetta
+    muista, vaikka konsensus olisi korkea. Lift on siis paapaino (85 %),
+    konsensus vain pieni tasapainoerotin (15 %) - tama estaa samojen
+    yleisesti-suosittujen kysymysten toistumisen joka joukkueen selityksissa.
     Palauttaa listan suurimmasta pienimpaan pisteeseen.
     """
     scored = []
@@ -48,7 +54,7 @@ def _score_questions(
             else 0.0
         )
         lift = team_ratio - other_ratio
-        score = team_ratio * 0.6 + max(lift, 0.0) * 0.4
+        score = lift * 0.85 + team_ratio * 0.15
         scored.append(
             {
                 "score": score,

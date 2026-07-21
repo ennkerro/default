@@ -4,11 +4,18 @@ Joukkueiden muodostus vastausten samankaltaisuuden perusteella.
 Algoritmi:
 1. Jokaisen osallistujaparin etaisyys = normalisoitu Hamming-etaisyys eli
    kuinka suureen osaan kysymyksista he vastasivat eri tavalla (0 = tayysin
-   samaa mielta kaikesta, 1 = tayysin eri mielta kaikesta).
+   samaa mielta kaikesta, 1 = tayysin eri mielta kaikesta). Kaikki kysymykset
+   vaikuttavat etaisyyteen yhta paljon.
 2. Hierarkkinen agglomeratiivinen klusterointi (average linkage) yhdistaa
    aina kaksi lahinta klusteria kunnes jaljella on tasan k klusteria. Tama
-   on deterministinen ja muodostaa "samanhenkiset" ryhmat luonnostaan.
-3. Tasapainotusvaihe siirtaa tarvittaessa henkiloita ylisuurista klustereista
+   on deterministinen ja antaa jarkevan lahtokohdan.
+3. K-medoids-tarkennus (Partitioning Around Medoids): jokainen osallistuja
+   siirretaan sen ryhman luo, jonka todelliseen jaseneen (medoidiin) han on
+   kaikista lahinna, minka jalkeen medoidit paivitetaan - toistetaan kunnes
+   vakiintuu. Tama varmistaa etta lopputulos perustuu aitoon parittaiseen
+   samankaltaisuuteen (kaikista lahimmiten samankaltaisesti vastanneet samaan
+   ryhmaan), eika vain siihen etta joku "sopii keskimaarin" johonkin ryhmaan.
+4. Tasapainotusvaihe siirtaa tarvittaessa henkiloita ylisuurista klustereista
    alisuuriin (mahdollisimman tasainen koko), mutta valitsee siirrettavaksi
    aina sen henkilon joka sopii huonoiten omaan nykyiseen ryhmaansa, ja
    kohteeksi ryhman johon han sopii parhaiten - vibe pysyy siis ensisijaisena
@@ -83,6 +90,56 @@ def _avg_dist_to_group(person: int, group: list[int], dist: dict) -> float:
     return sum(_pair_distance(dist, person, o) for o in others) / len(others)
 
 
+def _medoid(group: list[int], dist: dict) -> int:
+    """Ryhman jasen jolla on pienin keskietaisyys ryhman muihin jaseniin - ryhman "aito keskus"."""
+    return min(group, key=lambda p: _avg_dist_to_group(p, group, dist))
+
+
+def k_medoids_refine(clusters: list[list[int]], dist: dict, max_iterations: int = 30) -> list[list[int]]:
+    """
+    Tarkentaa agglomeratiivisen alkuklusteroinnin PAM-tyyppisella (Partitioning
+    Around Medoids) iteraatiolla: jokainen henkilo siirretaan sen ryhman luo,
+    jonka medoidiin (ryhman todellinen, olemassa oleva "keskeisin" jasen) han on
+    lahinna, minka jalkeen medoidit lasketaan uudelleen. Tama korjaa average
+    linkage -menetelman tunnetun heikkouden, jossa joku voi paatya ryhmaan vain
+    koska sopii "keskimaarin" siihen, vaikkei olisi aidosti lahinna ketaan
+    ryhman sisalla. Suppenee aina (kokonaisetaisyys medoidiin ei koskaan kasva),
+    joten max_iterations on vain varmuuden vuoksi eika kaytannossa juuri koskaan
+    tayty taman kokoluokan osallistujamaarilla.
+    """
+    clusters = [list(c) for c in clusters if c]
+    if len(clusters) <= 1:
+        return clusters
+
+    medoids = [_medoid(c, dist) for c in clusters]
+    current_of = {p: i for i, c in enumerate(clusters) for p in c}
+    all_points = list(current_of.keys())
+
+    for _ in range(max_iterations):
+        new_clusters: list[list[int]] = [[] for _ in medoids]
+        for p in all_points:
+            current = current_of[p]
+            # Tasapelissa (esim. kaksi identtisesti vastannutta osallistujaa)
+            # suositaan nykyista ryhmaa - estaa turhan siirtelyn ja sen etta
+            # jokin ryhma jaisi tyhjaksi pelkan tasapelin takia.
+            best = min(
+                range(len(medoids)),
+                key=lambda i: (_pair_distance(dist, p, medoids[i]), i != current),
+            )
+            new_clusters[best].append(p)
+            current_of[p] = best
+
+        new_medoids = [
+            _medoid(c, dist) if c else medoids[i] for i, c in enumerate(new_clusters)
+        ]
+        if new_medoids == medoids:
+            return new_clusters
+        medoids = new_medoids
+        clusters = new_clusters
+
+    return clusters
+
+
 def target_sizes(n: int, k: int) -> list[int]:
     """Mahdollisimman tasainen jako n:sta k:hon ryhmaan, esim. n=10, k=4 -> [3,3,2,2]."""
     if k <= 0:
@@ -146,6 +203,7 @@ def form_teams(
 
     effective_k = min(k, n)
     clusters = agglomerative_clusters(participant_ids, dist, effective_k)
+    clusters = k_medoids_refine(clusters, dist)
     sizes = target_sizes(n, k)
     balanced = rebalance(clusters, dist, sizes)
     return balanced, dist

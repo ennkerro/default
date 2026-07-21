@@ -24,6 +24,27 @@ function escapeHtml(str) {
 }
 
 /**
+ * Yrittaa fn:aa uudelleen jos se heittaa virheen - tarvitaan koska ilmaiset
+ * pilvipalvelut (esim. Render) nukahtavat jouten ollessaan ja ensimmainen
+ * pyynto sen jalkeen voi epaonnistua/aikakatkaista palvelimen herätessä.
+ * Ilman tata kayttaja joutuisi lataamaan sivun manuaalisesti uudelleen
+ * moneen kertaan, kunnes herätys sattuu olemaan valmis.
+ */
+async function fetchWithRetry(fn, { attempts = 25, delayMs = 3000, onAttempt } = {}) {
+  let lastError;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      lastError = e;
+      if (onAttempt) onAttempt(i + 1, attempts);
+      if (i < attempts - 1) await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+  throw lastError;
+}
+
+/**
  * Pyorittaa laskentatekstianimaation containerin sisalla ja kutsuu
  * onComplete-callbackin kun viimeinenkin rivi on nayta.
  */

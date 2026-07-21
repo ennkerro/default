@@ -12,6 +12,9 @@ Reititys:
   POST /api/admin/{secret}/form-teams   muodosta joukkueet
   POST /api/admin/{secret}/reset        nollaa koko tapahtuma
   GET  /api/admin/{secret}/qr           QR-koodi osallistumisosoitteeseen (PNG)
+  GET  /api/admin/{secret}/questions            kysymyspankki muokkausta varten
+  PUT  /api/admin/{secret}/questions            tallenna muokattu kysymyspankki
+  POST /api/admin/{secret}/questions/reset-defaults   palauta alkuperaiset kysymykset
   WS   /ws                        reaaliaikaiset tilapaivitykset kaikille
 """
 import io
@@ -27,8 +30,20 @@ from fastapi.staticfiles import StaticFiles
 from app import database
 from app.clustering import form_teams
 from app.config import ADMIN_TOKEN, STATIC_DIR, TEAM_COUNT
-from app.models import RegisterRequest, RegisterResponse, SubmitRequest
-from app.questions_data import load_questions, public_questions, question_ids
+from app.models import (
+    FormTeamsRequest,
+    QuestionsUpdateRequest,
+    RegisterRequest,
+    RegisterResponse,
+    SubmitRequest,
+)
+from app.questions_data import (
+    load_questions,
+    normalize_questions,
+    public_questions,
+    question_ids,
+    reset_to_defaults,
+)
 from app.team_generator import generate_teams
 from app.ws_manager import manager
 
@@ -58,6 +73,7 @@ def _current_state() -> dict:
         "completed": sum(1 for p in participants if p["completed_at"]),
         "teams_ready": teams is not None,
         "teams": teams,
+        "teams_version": database.get_results_version(),
         "participants": [
             {"name": p["name"], "completed": bool(p["completed_at"])} for p in participants
         ],
@@ -119,6 +135,7 @@ async def get_me(token: str):
         "completed": bool(participant["completed_at"]),
         "teams_ready": teams is not None,
         "teams": teams,
+        "teams_version": database.get_results_version(),
     }
 
 
@@ -146,7 +163,7 @@ async def submit(payload: SubmitRequest):
 
 
 @app.post("/api/admin/{secret}/form-teams")
-async def admin_form_teams(secret: str):
+async def admin_form_teams(secret: str, payload: FormTeamsRequest | None = None):
     _check_admin(secret)
 
     participants = database.get_all_participants()
@@ -156,12 +173,14 @@ async def admin_form_teams(secret: str):
             status_code=400, detail="Liian vahan vastanneita joukkueiden muodostamiseen."
         )
 
+    team_count = (payload.team_count if payload else None) or TEAM_COUNT
+
     all_answers = database.get_all_answers()
     participant_ids = [p["id"] for p in completed]
     names_by_id = {p["id"]: p["name"] for p in completed}
     qids = question_ids()
 
-    clusters, dist = form_teams(participant_ids, all_answers, qids, k=TEAM_COUNT)
+    clusters, dist = form_teams(participant_ids, all_answers, qids, k=team_count)
     teams = generate_teams(clusters, all_answers, load_questions(), names_by_id, dist)
 
     database.save_results(teams)
@@ -186,6 +205,29 @@ async def admin_qr(secret: str, request: Request):
     img.save(buf, format="PNG")
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
+
+
+@app.get("/api/admin/{secret}/questions")
+async def admin_get_questions(secret: str):
+    _check_admin(secret)
+    return {"questions": load_questions()}
+
+
+@app.put("/api/admin/{secret}/questions")
+async def admin_update_questions(secret: str, payload: QuestionsUpdateRequest):
+    _check_admin(secret)
+    try:
+        normalized = normalize_questions(payload.questions)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    database.save_question_bank(normalized)
+    return {"questions": normalized}
+
+
+@app.post("/api/admin/{secret}/questions/reset-defaults")
+async def admin_reset_questions(secret: str):
+    _check_admin(secret)
+    return {"questions": reset_to_defaults()}
 
 
 # ---------------------------------------------------------------------------

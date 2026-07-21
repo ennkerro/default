@@ -2,8 +2,9 @@
 
 Yhden sivun web-sovellus mökkiporukan "psykologiseen" (täysin absurdiin)
 vibe-analyysiin. Osallistujat skannaavat QR-koodin, vastaavat 25 järjettömän
-hauskaan monivalintakysymykseen, ja sovellus muodostaa automaattisesti 4
-joukkuetta niin, että samanhenkisimmät vastaajat päätyvät samaan joukkueeseen.
+hauskaan monivalintakysymykseen, ja sovellus muodostaa automaattisesti
+joukkueet (oletuksena 4, admin voi valita 2-10) niin, että samanhenkisimmät
+vastaajat päätyvät samaan joukkueeseen.
 
 Tekninen toteutus on tarkoituksella yksinkertainen: **Python-backend (FastAPI)
 + SQLite + puhdas HTML/CSS/JS-frontend**, ei build-vaihetta, ei ulkoisia
@@ -111,8 +112,32 @@ kerralla.
 
 ## Miten kysymyksiä muokataan
 
-Kaikki 25 kysymystä asuvat tiedostossa [`app/questions.json`](app/questions.json).
-Jokainen kysymys on JSON-olio, jossa on `id`, `text` ja neljä `options`-oliota:
+**Helpoin tapa - admin-paneelista, ei koodia tarvita:** avaa admin-paneeli ja
+paina "✏️ Muokkaa kysymyksiä". Sieltä voit:
+
+- muokata minkä tahansa kysymyksen tai vaihtoehdon tekstiä suoraan
+- poistaa tylsät kysymykset (roskakori-ikoni)
+- lisätä uusia kysymyksiä ("+ Lisää kysymys" - täytä teksti ja neljä vaihtoehtoa)
+- palauttaa alkuperäiset 25 oletuskysymystä ("Palauta oletukset")
+- ladata varmuuskopion nykyisistä kysymyksistä tiedostoksi omalle koneelle, ja
+  tuoda se takaisin myöhemmin ("Lataa varmuuskopio" / "Tuo tiedostosta")
+
+Muista painaa **"Tallenna muutokset"** - muokkaukset eivät tallennu ilman sitä.
+Kysymysten muokkaaminen kannattaa tehdä ennen kuin kaverit alkavat vastata,
+ei kesken kyselyn.
+
+**Huom Render-version käyttäjille:** kysymyspankki tallentuu samaan
+väliaikaiseen levytilaan kuin osallistujatkin (ks. yllä oleva kohta ilmaisen
+tason rajoituksista) - jos palvelu joutuu nukkumaan pitkäksi aikaa muokkauksen
+ja pelin välillä, muokkaukset voivat kadota. Jos olet tehnyt paljon omia
+kysymyksiä, ota varmuuskopio ("Lataa varmuuskopio") ja tuo se tarvittaessa
+takaisin ennen peli-iltaa.
+
+**Teknisempi vaihtoehto - questions.json suoraan:** kysymysten alkuperäinen
+"tehdasasetus" asuu tiedostossa [`app/questions.json`](app/questions.json) ja
+sitä käytetään aina kun tietokannassa ei vielä ole yhtään kysymystä tai kun
+painat "Palauta oletukset". Jokainen kysymys on JSON-olio, jossa on `id`,
+`text` ja neljä `options`-oliota:
 
 ```json
 {
@@ -124,16 +149,17 @@ Jokainen kysymys on JSON-olio, jossa on `id`, `text` ja neljä `options`-oliota:
 }
 ```
 
-- `text` / option-`text`: näkyy sellaisenaan osallistujalle. Voi muokata vapaasti.
+- `text` / option-`text`: näkyy sellaisenaan osallistujalle.
 - `tag`: yksi sana (pieni alkukirjain), jota käytetään jos tämä vaihtoehto
   osoittautuu jonkin joukkueen tunnusomaisimmaksi vastaukseksi - se syötetään
-  joukkueen nimigeneraattoriin (`app/content.py`, `NAME_TEMPLATES`).
+  joukkueen nimigeneraattoriin (`app/content.py`, `NAME_TEMPLATES`). Admin-
+  paneelin kautta lisätyille kysymyksille tämä päätellään automaattisesti.
 - `vibe_line`: valmiiksi kirjoitettu perustelulause tulossivun "Miksi juuri
   te?" -osioon. Placeholderit `{count}`, `{total}` ja `{percent}` täytetään
-  automaattisesti oikeilla luvuilla kun tätä vaihtoehtoa käytetään perusteluna.
+  automaattisesti oikeilla luvuilla. Jos puuttuu, käytetään yleispätevää
+  varalausetta - admin-paneelin kautta lisätyt kysymykset toimivat siis aina,
+  vaikka valmista perustelulausetta ei kirjoitettaisikaan.
 
-Uuden kysymyksen lisääminen: kopioi yksi olio `questions`-listan sisään, anna
-sille uniikki `id`, ja kirjoita neljä vaihtoehtoa. Ei koodimuutoksia tarvita.
 Kysymysten määrän ei tarvitse olla tasan 25 - mikä tahansa määrä toimii.
 
 ## Projektirakenne
@@ -146,8 +172,8 @@ app/
   clustering.py       Samankaltaisuuslaskenta ja joukkueiden muodostus
   team_generator.py   Joukkueen nimi, perustelut ja loppukaneetti
   content.py          Nimimallit ja loppukaneettien pankki
-  questions.json       Kysymyspankki (muokattava)
-  questions_data.py    Kysymysten lataus/välimuisti
+  questions.json       Kysymyspankin oletussisältö ("tehdasasetus")
+  questions_data.py    Kysymyspankin lataus tietokannasta, validointi, oletusten palautus
   ws_manager.py        WebSocket-yleislähetys
   config.py            Asetukset (portti, admin-tunnus, tietokantapolku)
 static/
@@ -163,22 +189,32 @@ run.py                 Käynnistysskripti (tulostaa QR-osoitteet konsoliin)
 ## Miten joukkueet muodostetaan
 
 1. Jokaisen osallistujaparin väliltä lasketaan **normalisoitu Hamming-etäisyys**
-   (kuinka suureen osaan 25 kysymyksestä he vastasivat eri tavalla).
+   (kuinka suureen osaan kysymyksistä he vastasivat eri tavalla). Kaikki
+   kysymykset vaikuttavat yhtä paljon.
 2. **Hierarkkinen agglomeratiivinen klusterointi** (average linkage) yhdistää
-   lähimmät klusterit kunnes jäljellä on tasan 4 ryhmää - tämä muodostaa
-   luonnostaan samanhenkiset porukat ilman että koon tasapainoa täytyy valita
-   etukäteen.
-3. Jos ryhmien koot menevät kovin epätasan, **tasapainotusvaihe** siirtää
+   lähimmät klusterit kunnes jäljellä on admin-paneelista valittu määrä
+   ryhmiä (oletus 4) - antaa järkevän lähtökohdan.
+3. **K-medoids-tarkennus** (Partitioning Around Medoids): jokainen osallistuja
+   siirretään sen ryhmän luo jonka todelliseen jäseneen (medoidiin) hän on
+   kaikista lähinnä, minkä jälkeen medoidit päivitetään - toistetaan kunnes
+   vakiintuu. Tämä varmistaa että lopputulos perustuu aitoon parittaiseen
+   samankaltaisuuteen, ei vain siihen että joku "sopii keskimäärin" johonkin
+   ryhmään.
+4. Jos ryhmien koot menevät kovin epätasan, **tasapainotusvaihe** siirtää
    ylisuurista ryhmistä alisuuriin aina sen henkilön, joka sopii huonoiten
    omaan nykyiseen ryhmäänsä - ja kohteeksi ryhmän johon hän sopii parhaiten.
    Vibe pysyy siis ensisijaisena periaatteena myös tasapainotuksen aikana.
-4. Jokaiselle joukkueelle etsitään sen **tunnusomaisimmat kysymykset**
-   (korkea sisäinen yksimielisyys + erottuu muista joukkueista), joiden
+5. Jokaiselle joukkueelle etsitään sen **tunnusomaisimmat kysymykset** -
+   painotetaan erityisesti sitä kuinka paljon joukkueen vastaus poikkeaa
+   *muista* joukkueista, ei vain sisäistä yksimielisyyttä. Näin eri
+   joukkueiden perustelut nostavat esiin eri kysymyksiä sen sijaan että
+   kaikki viittaisivat samaan yleisesti suosittuun vastaukseen. Näiden
    pohjalta generoidaan joukkueen nimi ja 3-5 perustelua. Viimeinen perustelu
    on aina algoritmin oikeasti laskema yhteensopivuusprosentti.
 
-Admin voi muodostaa joukkueet uudelleen milloin tahansa (nappi toimii myös
-uudelleen, jos joku vastaa myöhässä) - tuorein ajo korvaa edellisen tuloksen.
+Admin voi muodostaa joukkueet uudelleen milloin tahansa ja eri
+joukkuemäärällä (nappi toimii myös uudelleen, jos joku vastaa myöhässä) -
+tuorein ajo korvaa edellisen tuloksen kaikkien näytöillä.
 
 ## Tapahtuman nollaus (uudelleenkäyttö)
 
@@ -193,4 +229,4 @@ viikonloppuna eri porukalla. Kysymyspankki ja admin-tunnus säilyvät ennallaan.
 | `PORT`        | `8000`        | Palvelimen portti                         |
 | `HOST`        | `0.0.0.0`     | Kuunneltava osoite                        |
 | `ADMIN_TOKEN` | (generoidaan) | Pakota tietty admin-URL-tunnus            |
-| `TEAM_COUNT`  | `4`           | Kuinka moneen joukkueeseen jaetaan         |
+| `TEAM_COUNT`  | `4`           | Joukkueiden oletusmäärä (admin voi silti valita 2-10 per ajo paneelista) |

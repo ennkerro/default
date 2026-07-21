@@ -5,250 +5,650 @@
       "id": "kirjanpitaja-elain",
       "text": "Mikä eläin olisi paras kirjanpitäjä?",
       "options": [
-        { "text": "Mehiläinen – järjestelmällinen ja ahkera", "tag": "mehilainen", "vibe_line": "{count}/{total} luottaisi kirjanpitonsa mehiläiselle epäröimättä." },
-        { "text": "Myyrä – näkee asiat maan alta", "tag": "myyra", "vibe_line": "{count} osallistujaa uskoo myyrän piilotaloudelliseen näkemykseen." },
-        { "text": "Pöllö – valvoo yöllä, tarkistaa kuitit", "tag": "pollo", "vibe_line": "{count}/{total} haluaa kuittinsa tarkistettavan yöaikaan, pöllön toimesta." },
-        { "text": "Laama – ei kysymyksiä, vain energiaa", "tag": "laama", "vibe_line": "{count} henkilöä äänesti laaman puolesta, kuitteja kyseenalaistamatta." }
+        {
+          "text": "Mehiläinen – järjestelmällinen ja ahkera",
+          "tag": "mehiläinen",
+          "vibe_line": "{count}/{total} luottaisi kirjanpitonsa mehiläiselle epäröimättä."
+        },
+        {
+          "text": "Myyrä – näkee asiat maan alta",
+          "tag": "myyrä",
+          "vibe_line": "{count} osallistujaa uskoo myyrän piilotaloudelliseen näkemykseen."
+        },
+        {
+          "text": "Pöllö – valvoo yöllä, tarkistaa kuitit",
+          "tag": "pöllö",
+          "vibe_line": "{count}/{total} haluaa kuittinsa tarkistettavan yöaikaan, pöllön toimesta."
+        },
+        {
+          "text": "Laama – ei kysymyksiä, vain energiaa",
+          "tag": "laama",
+          "vibe_line": "{count} henkilöä äänesti laaman puolesta, kuitteja kyseenalaistamatta."
+        }
       ]
     },
     {
       "id": "sukat-vs-tyyny",
       "text": "Valitsisitko loputtomasti ilmaisia sukkia vai yhden täydellisen tyynyn?",
       "options": [
-        { "text": "Loputtomat ilmaiset sukat", "tag": "sukka", "vibe_line": "{count}/{total} valitsi määrän laadun sijaan: ikuiset sukat." },
-        { "text": "Yksi täydellinen tyyny", "tag": "tyyny", "vibe_line": "{count} osallistujaa etsii yhtä täydellistä unta, ei kompromisseja." },
-        { "text": "En kumpaakaan, haluan vain sisäisen rauhan", "tag": "rauha", "vibe_line": "{count}/{total} ohitti koko kysymyksen ja tilasi suoraan rauhan." },
-        { "text": "Molemmat, en neuvottele", "tag": "maksimalisti", "vibe_line": "{count} henkilöä ei usko niukkuuteen, vain molempiin samaan aikaan." }
+        {
+          "text": "Loputtomat ilmaiset sukat",
+          "tag": "sukka",
+          "vibe_line": "{count}/{total} valitsi määrän laadun sijaan: ikuiset sukat."
+        },
+        {
+          "text": "Yksi täydellinen tyyny",
+          "tag": "tyyny",
+          "vibe_line": "{count} osallistujaa etsii yhtä täydellistä unta, ei kompromisseja."
+        },
+        {
+          "text": "En kumpaakaan, haluan vain sisäisen rauhan",
+          "tag": "rauha",
+          "vibe_line": "{count}/{total} ohitti koko kysymyksen ja tilasi suoraan rauhan."
+        },
+        {
+          "text": "Molemmat, en neuvottele",
+          "tag": "maksimalisti",
+          "vibe_line": "{count} henkilöä ei usko niukkuuteen, vain molempiin samaan aikaan."
+        }
       ]
     },
     {
       "id": "kodinkone",
       "text": "Jos olisit kodinkone, mikä olisit?",
       "options": [
-        { "text": "Leivänpaahdin – luotettava, hieman vaarallinen", "tag": "leivanpaahdin", "vibe_line": "{count}/{total} tunnistaa itsensä leivänpaahtimeksi: luotettava mutta arvaamaton." },
-        { "text": "Pölynimuri – äänekäs mutta tehokas", "tag": "polynimuri", "vibe_line": "{count} osallistujaa imisi ongelmat pois, äänekkäästi." },
-        { "text": "Mikroaaltouuni – nopea ratkaisu kaikkeen", "tag": "mikro", "vibe_line": "{count}/{total} ratkaisisi elämän 90 sekunnissa, keskiteholla." },
-        { "text": "Silitysrauta – ei koskaan päällä silloin kun pitäisi", "tag": "silitysrauta", "vibe_line": "{count} henkilöä myöntää olevansa käytettävissä väärään aikaan." }
+        {
+          "text": "Leivänpaahdin – luotettava, hieman vaarallinen",
+          "tag": "leivänpaahdin",
+          "vibe_line": "{count}/{total} tunnistaa itsensä leivänpaahtimeksi: luotettava mutta arvaamaton."
+        },
+        {
+          "text": "Pölynimuri – äänekäs mutta tehokas",
+          "tag": "pölynimuri",
+          "vibe_line": "{count} osallistujaa imisi ongelmat pois, äänekkäästi."
+        },
+        {
+          "text": "Mikroaaltouuni – nopea ratkaisu kaikkeen",
+          "tag": "mikro",
+          "vibe_line": "{count}/{total} ratkaisisi elämän 90 sekunnissa, keskiteholla."
+        },
+        {
+          "text": "Silitysrauta – ei koskaan päällä silloin kun pitäisi",
+          "tag": "silitysrauta",
+          "vibe_line": "{count} henkilöä myöntää olevansa käytettävissä väärään aikaan."
+        }
       ]
     },
     {
       "id": "pahin-asia",
       "text": "Mikä näistä on objektiivisesti pahinta?",
       "options": [
-        { "text": "Märät sukat", "tag": "markasukka", "vibe_line": "{count}/{total} nimeää märät sukat inhimillisen kärsimyksen huipuksi." },
-        { "text": "Hiekkainen sänky", "tag": "hiekka", "vibe_line": "{count} osallistujaa kantaa traumaa hiekkaisesta lakanasta." },
-        { "text": "Jäähtynyt kahvi", "tag": "kylmakahvi", "vibe_line": "{count}/{total} kokee kylmän kahvin henkilökohtaisena loukkauksena." },
-        { "text": "Puhelin putoaa naamalle sängyssä", "tag": "puhelintapaturma", "vibe_line": "{count} henkilöä on kokenut saman puhelintragedian ja selvinnyt." }
+        {
+          "text": "Märät sukat",
+          "tag": "märkäsukka",
+          "vibe_line": "{count}/{total} nimeää märät sukat inhimillisen kärsimyksen huipuksi."
+        },
+        {
+          "text": "Hiekkainen sänky",
+          "tag": "hiekka",
+          "vibe_line": "{count} osallistujaa kantaa traumaa hiekkaisesta lakanasta."
+        },
+        {
+          "text": "Jäähtynyt kahvi",
+          "tag": "kylmäkahvi",
+          "vibe_line": "{count}/{total} kokee kylmän kahvin henkilökohtaisena loukkauksena."
+        },
+        {
+          "text": "Puhelin putoaa naamalle sängyssä",
+          "tag": "puhelintapaturma",
+          "vibe_line": "{count} henkilöä on kokenut saman puhelintragedian ja selvinnyt."
+        }
       ]
     },
     {
       "id": "torstai-vari",
       "text": "Minkä värinen ääni on torstai?",
       "options": [
-        { "text": "Sininen", "tag": "sininen", "vibe_line": "{count}/{total} kuulee torstain sävyissä sinistä." },
-        { "text": "Beige", "tag": "beige", "vibe_line": "{count} osallistujaa kokee torstain lämpimän neutraalina, beigenä." },
-        { "text": "Kirkkaan vihreä", "tag": "vihrea", "vibe_line": "{count}/{total} näkee torstaissa yllättävän kirkasta vihreää." },
-        { "text": "Ääntä ei ole, vain hiljaisuus", "tag": "hiljaisuus", "vibe_line": "{count} henkilöä kuulee torstaissa vain tyhjän, kunnioittavan hiljaisuuden." }
+        {
+          "text": "Sininen",
+          "tag": "sininen",
+          "vibe_line": "{count}/{total} kuulee torstain sävyissä sinistä."
+        },
+        {
+          "text": "Beige",
+          "tag": "beige",
+          "vibe_line": "{count} osallistujaa kokee torstain lämpimän neutraalina, beigenä."
+        },
+        {
+          "text": "Kirkkaan vihreä",
+          "tag": "vihreä",
+          "vibe_line": "{count}/{total} näkee torstaissa yllättävän kirkasta vihreää."
+        },
+        {
+          "text": "Ääntä ei ole, vain hiljaisuus",
+          "tag": "hiljaisuus",
+          "vibe_line": "{count} henkilöä kuulee torstaissa vain tyhjän, kunnioittavan hiljaisuuden."
+        }
       ]
     },
     {
       "id": "joutsen-luottamus",
       "text": "Luotatko joutseniin?",
       "options": [
-        { "text": "Kyllä, täysin ja varauksetta", "tag": "joutsenusko", "vibe_line": "{count}/{total} luottaa joutseniin täysin varauksetta." },
-        { "text": "En ikinä, ne tietävät jotain", "tag": "joutsenepailu", "vibe_line": "{count} osallistujaa pitää joutsenia epäilyttävinä salaliittolaisina." },
-        { "text": "Vain jos ne luottavat minuun ensin", "tag": "vastavuoroisuus", "vibe_line": "{count}/{total} vaatii joutsenilta aloitteen ennen luottamusta." },
-        { "text": "Ne kysyvät minulta täsmälleen samaa", "tag": "joutsenmysteeri", "vibe_line": "{count} henkilöä epäilee, että joutsenet analysoivat heitä takaisin." }
+        {
+          "text": "Kyllä, täysin ja varauksetta",
+          "tag": "joutsenusko",
+          "vibe_line": "{count}/{total} luottaa joutseniin täysin varauksetta."
+        },
+        {
+          "text": "En ikinä, ne tietävät jotain",
+          "tag": "joutsenepäily",
+          "vibe_line": "{count} osallistujaa pitää joutsenia epäilyttävinä salaliittolaisina."
+        },
+        {
+          "text": "Vain jos ne luottavat minuun ensin",
+          "tag": "vastavuoroisuus",
+          "vibe_line": "{count}/{total} vaatii joutsenilta aloitteen ennen luottamusta."
+        },
+        {
+          "text": "Ne kysyvät minulta täsmälleen samaa",
+          "tag": "joutsenmysteeri",
+          "vibe_line": "{count} henkilöä epäilee, että joutsenet analysoivat heitä takaisin."
+        }
       ]
     },
     {
       "id": "geometrinen-muoto",
       "text": "Mikä on paras geometrinen muoto?",
       "options": [
-        { "text": "Ympyrä – ei alkua, ei loppua, ei draamaa", "tag": "ympyra", "vibe_line": "{count}/{total} valitsi ympyrän: rauhallinen eikä kulmikas." },
-        { "text": "Kolmio – vakaa mutta terävä", "tag": "kolmio", "vibe_line": "{count} osallistujaa arvostaa kolmion rakenteellista jännitettä." },
-        { "text": "Heksagoni – koska mehiläiset eivät voi olla väärässä", "tag": "heksagoni", "vibe_line": "{count}/{total} luottaa heksagoniin, luonnon omaan suosikkiin." },
-        { "text": "Muoto jota ei ole vielä keksitty", "tag": "tuntematonmuoto", "vibe_line": "{count} henkilöä odottaa geometriaa joka ei ole vielä saapunut." }
+        {
+          "text": "Ympyrä – ei alkua, ei loppua, ei draamaa",
+          "tag": "ympyrä",
+          "vibe_line": "{count}/{total} valitsi ympyrän: rauhallinen eikä kulmikas."
+        },
+        {
+          "text": "Kolmio – vakaa mutta terävä",
+          "tag": "kolmio",
+          "vibe_line": "{count} osallistujaa arvostaa kolmion rakenteellista jännitettä."
+        },
+        {
+          "text": "Heksagoni – koska mehiläiset eivät voi olla väärässä",
+          "tag": "heksagoni",
+          "vibe_line": "{count}/{total} luottaa heksagoniin, luonnon omaan suosikkiin."
+        },
+        {
+          "text": "Muoto jota ei ole vielä keksitty",
+          "tag": "tuntematonmuoto",
+          "vibe_line": "{count} henkilöä odottaa geometriaa joka ei ole vielä saapunut."
+        }
       ]
     },
     {
       "id": "lusikka-vs-tunnelma",
       "text": "Kumpi on voimakkaampi: lusikka vai tunnelma?",
       "options": [
-        { "text": "Lusikka, aina ja poikkeuksetta", "tag": "lusikka", "vibe_line": "{count}/{total} asettaa lusikan tunnelman yläpuolelle, poikkeuksetta." },
-        { "text": "Tunnelma voittaa kaiken, myös ruokailuvälineet", "tag": "tunnelma", "vibe_line": "{count} osallistujaa uskoo tunnelman voittavan minkä tahansa lusikan." },
-        { "text": "Ne ovat sama voima eri muodossa", "tag": "lusikkayhteys", "vibe_line": "{count}/{total} näkee lusikan ja tunnelman samana energiana." },
-        { "text": "Riippuu täysin lusikan koosta", "tag": "lusikkakoko", "vibe_line": "{count} henkilöä vaatii tarkempia mittatietoja ennen kannanottoa." }
+        {
+          "text": "Lusikka, aina ja poikkeuksetta",
+          "tag": "lusikka",
+          "vibe_line": "{count}/{total} asettaa lusikan tunnelman yläpuolelle, poikkeuksetta."
+        },
+        {
+          "text": "Tunnelma voittaa kaiken, myös ruokailuvälineet",
+          "tag": "tunnelma",
+          "vibe_line": "{count} osallistujaa uskoo tunnelman voittavan minkä tahansa lusikan."
+        },
+        {
+          "text": "Ne ovat sama voima eri muodossa",
+          "tag": "lusikkayhteys",
+          "vibe_line": "{count}/{total} näkee lusikan ja tunnelman samana energiana."
+        },
+        {
+          "text": "Riippuu täysin lusikan koosta",
+          "tag": "lusikkakoko",
+          "vibe_line": "{count} henkilöä vaatii tarkempia mittatietoja ennen kannanottoa."
+        }
       ]
     },
     {
       "id": "salmari-ihmisena",
       "text": "Jos salmiakkikossu olisi ihminen, olisiko se mukava tyyppi?",
       "options": [
-        { "text": "Kyllä, mutta hieman pelottava", "tag": "salmarimukava", "vibe_line": "{count}/{total} kutsuisi Salmarin juhliin, muttei jättäisi kahden kesken." },
-        { "text": "Ei, mutta ainakin rehellinen", "tag": "salmarirehellinen", "vibe_line": "{count} osallistujaa arvostaa Salmarin brutaalia rehellisyyttä." },
-        { "text": "Se olisi porukan paras ystävä", "tag": "salmariystava", "vibe_line": "{count}/{total} nimittäisi Salmarin parhaaksi ystäväkseen välittömästi." },
-        { "text": "Se ei puhuisi kenellekään ennen puoltayötä", "tag": "salmarihiljainen", "vibe_line": "{count} henkilöä tunnistaa Salmarin sosiaalisen aikataulun omakseen." }
+        {
+          "text": "Kyllä, mutta hieman pelottava",
+          "tag": "salmarimukava",
+          "vibe_line": "{count}/{total} kutsuisi Salmarin juhliin, muttei jättäisi kahden kesken."
+        },
+        {
+          "text": "Ei, mutta ainakin rehellinen",
+          "tag": "salmarirehellinen",
+          "vibe_line": "{count} osallistujaa arvostaa Salmarin brutaalia rehellisyyttä."
+        },
+        {
+          "text": "Se olisi porukan paras ystävä",
+          "tag": "salmariystävä",
+          "vibe_line": "{count}/{total} nimittäisi Salmarin parhaaksi ystäväkseen välittömästi."
+        },
+        {
+          "text": "Se ei puhuisi kenellekään ennen puoltayötä",
+          "tag": "salmarihiljainen",
+          "vibe_line": "{count} henkilöä tunnistaa Salmarin sosiaalisen aikataulun omakseen."
+        }
       ]
     },
     {
       "id": "ankka-presidentti",
       "text": "Kumpi olisi parempi presidentti: ankka vai robotti?",
       "options": [
-        { "text": "Ankka, kansanläheisempi vaihtoehto", "tag": "ankka", "vibe_line": "{count}/{total} äänestäisi ankkaa sen kansanläheisyyden vuoksi." },
-        { "text": "Robotti, tehokkaampi päätöksenteko", "tag": "robotti", "vibe_line": "{count} osallistujaa luottaa robotin viileään tehokkuuteen vallassa." },
-        { "text": "Ankka robotin sisällä, molempien parhaat puolet", "tag": "ankkarobotti", "vibe_line": "{count}/{total} vaatii hybridiratkaisua: ankka robotin kuoressa." },
-        { "text": "Ei kumpikaan, nimitän itseni", "tag": "itsevaltius", "vibe_line": "{count} henkilöä ohittaisi koko vaalin ja julistautuisi johtajaksi." }
+        {
+          "text": "Ankka, kansanläheisempi vaihtoehto",
+          "tag": "ankka",
+          "vibe_line": "{count}/{total} äänestäisi ankkaa sen kansanläheisyyden vuoksi."
+        },
+        {
+          "text": "Robotti, tehokkaampi päätöksenteko",
+          "tag": "robotti",
+          "vibe_line": "{count} osallistujaa luottaa robotin viileään tehokkuuteen vallassa."
+        },
+        {
+          "text": "Ankka robotin sisällä, molempien parhaat puolet",
+          "tag": "ankkarobotti",
+          "vibe_line": "{count}/{total} vaatii hybridiratkaisua: ankka robotin kuoressa."
+        },
+        {
+          "text": "Ei kumpikaan, nimitän itseni",
+          "tag": "itsevaltius",
+          "vibe_line": "{count} henkilöä ohittaisi koko vaalin ja julistautuisi johtajaksi."
+        }
       ]
     },
     {
       "id": "peruna-riita",
       "text": "Kuinka monta perunaa tarvitaan ratkaisemaan riita?",
       "options": [
-        { "text": "Yksi, mutta sen täytyy olla oikea peruna", "tag": "yksiperuna", "vibe_line": "{count}/{total} uskoo yhteen oikeaan perunaan riittävän ratkaisuksi." },
-        { "text": "Kolme, tasapainon vuoksi", "tag": "kolmeperunaa", "vibe_line": "{count} osallistujaa vaatii kolme perunaa symmetrian takia." },
-        { "text": "Koko säkki, varmuuden vuoksi", "tag": "perunasakki", "vibe_line": "{count}/{total} ratkaisisi riidan koko perunasäkin voimalla." },
-        { "text": "Riitaa ei voi ratkaista, sen voi vain rauhoittaa perunalla", "tag": "perunarauha", "vibe_line": "{count} henkilöä hyväksyy, että peruna rauhoittaa muttei ratkaise mitään." }
+        {
+          "text": "Yksi, mutta sen täytyy olla oikea peruna",
+          "tag": "yksiperuna",
+          "vibe_line": "{count}/{total} uskoo yhteen oikeaan perunaan riittävän ratkaisuksi."
+        },
+        {
+          "text": "Kolme, tasapainon vuoksi",
+          "tag": "kolmeperunaa",
+          "vibe_line": "{count} osallistujaa vaatii kolme perunaa symmetrian takia."
+        },
+        {
+          "text": "Koko säkki, varmuuden vuoksi",
+          "tag": "perunasäkki",
+          "vibe_line": "{count}/{total} ratkaisisi riidan koko perunasäkin voimalla."
+        },
+        {
+          "text": "Riitaa ei voi ratkaista, sen voi vain rauhoittaa perunalla",
+          "tag": "perunarauha",
+          "vibe_line": "{count} henkilöä hyväksyy, että peruna rauhoittaa muttei ratkaise mitään."
+        }
       ]
     },
     {
       "id": "hengellinen-suojelija",
       "text": "Valitse hengellinen suojelijasi.",
       "options": [
-        { "text": "Kärpänen", "tag": "karpanen", "vibe_line": "{count}/{total} on antautunut Kärpäsen suojelukselle." },
-        { "text": "Leivänpaahdin", "tag": "leivanpaahdinhenki", "vibe_line": "{count} osallistujaa valitsi leivänpaahtimen henkiseksi oppaakseen." },
-        { "text": "Baileys", "tag": "baileys", "vibe_line": "{count}/{total} on liittänyt kohtalonsa Baileysiin." },
-        { "text": "Excel-taulukko", "tag": "excel", "vibe_line": "{count} henkilöä rukoilee soluviittausten jumalaa, Exceliä." }
+        {
+          "text": "Kärpänen",
+          "tag": "kärpänen",
+          "vibe_line": "{count}/{total} on antautunut Kärpäsen suojelukselle."
+        },
+        {
+          "text": "Leivänpaahdin",
+          "tag": "leivänpaahdinhenki",
+          "vibe_line": "{count} osallistujaa valitsi leivänpaahtimen henkiseksi oppaakseen."
+        },
+        {
+          "text": "Baileys",
+          "tag": "baileys",
+          "vibe_line": "{count}/{total} on liittänyt kohtalonsa Baileysiin."
+        },
+        {
+          "text": "Excel-taulukko",
+          "tag": "excel",
+          "vibe_line": "{count} henkilöä rukoilee soluviittausten jumalaa, Exceliä."
+        }
       ]
     },
     {
       "id": "mokki-taito",
       "text": "Mikä on mökkielämän tärkein taito?",
       "options": [
-        { "text": "Saunan lämmittäminen juuri oikeaan aikaan", "tag": "saunanlammitys", "vibe_line": "{count}/{total} pitää saunan ajoitusta pyhänä taitona." },
-        { "text": "Grillihiilten kunnon arviointi silmämääräisesti", "tag": "grillihiili", "vibe_line": "{count} osallistujaa lukee hiiliä kuin muinaisia riimukiviä." },
-        { "text": "Merkityksellinen katsominen kattoon", "tag": "kattokatse", "vibe_line": "{count}/{total} hallitsee syvällisen katse-kattoon-tekniikan." },
-        { "text": "Musiikin valinta ilman että kukaan suuttuu", "tag": "musiikkirauha", "vibe_line": "{count} henkilöä on saavuttanut soittolistadiplomaatin tason." }
+        {
+          "text": "Saunan lämmittäminen juuri oikeaan aikaan",
+          "tag": "saunanlämmitys",
+          "vibe_line": "{count}/{total} pitää saunan ajoitusta pyhänä taitona."
+        },
+        {
+          "text": "Grillihiilten kunnon arviointi silmämääräisesti",
+          "tag": "grillihiili",
+          "vibe_line": "{count} osallistujaa lukee hiiliä kuin muinaisia riimukiviä."
+        },
+        {
+          "text": "Merkityksellinen katsominen kattoon",
+          "tag": "kattokatse",
+          "vibe_line": "{count}/{total} hallitsee syvällisen katse-kattoon-tekniikan."
+        },
+        {
+          "text": "Musiikin valinta ilman että kukaan suuttuu",
+          "tag": "musiikkirauha",
+          "vibe_line": "{count} henkilöä on saavuttanut soittolistadiplomaatin tason."
+        }
       ]
     },
     {
       "id": "saa-ilmio",
       "text": "Jos olisit sään ilmiö, mikä olisit?",
       "options": [
-        { "text": "Loputon tihkusade", "tag": "tihkusade", "vibe_line": "{count}/{total} tunnistaa itsensä tihkusateeksi, joka ei koskaan lopu." },
-        { "text": "Äkillinen mutta lyhyt ukkoskuuro", "tag": "ukkonen", "vibe_line": "{count} osallistujaa varoittaa: äkillinen, voimakas, ohi nopeasti." },
-        { "text": "Utuinen, salaperäinen aamu järvellä", "tag": "sumu", "vibe_line": "{count}/{total} kulkee elämän läpi järvisumun tavoin." },
-        { "text": "Epäilyttävän täydellinen auringonpaiste", "tag": "aurinko", "vibe_line": "{count} henkilöä on liian täydellinen ollakseen turvallinen, aivan kuin aurinko." }
+        {
+          "text": "Loputon tihkusade",
+          "tag": "tihkusade",
+          "vibe_line": "{count}/{total} tunnistaa itsensä tihkusateeksi, joka ei koskaan lopu."
+        },
+        {
+          "text": "Äkillinen mutta lyhyt ukkoskuuro",
+          "tag": "ukkonen",
+          "vibe_line": "{count} osallistujaa varoittaa: äkillinen, voimakas, ohi nopeasti."
+        },
+        {
+          "text": "Utuinen, salaperäinen aamu järvellä",
+          "tag": "sumu",
+          "vibe_line": "{count}/{total} kulkee elämän läpi järvisumun tavoin."
+        },
+        {
+          "text": "Epäilyttävän täydellinen auringonpaiste",
+          "tag": "aurinko",
+          "vibe_line": "{count} henkilöä on liian täydellinen ollakseen turvallinen, aivan kuin aurinko."
+        }
       ]
     },
     {
       "id": "mokkiheratys",
       "text": "Mikä on todennäköisin tapa herätä mökillä?",
       "options": [
-        { "text": "Naapurin moottorisaha kello seitsemän", "tag": "moottorisaha", "vibe_line": "{count}/{total} herää moottorisahan ääneen, halusi tai ei." },
-        { "text": "Lintujen innokas kirkuna", "tag": "linnunkirkuna", "vibe_line": "{count} osallistujaa herää lintukuoron pääesiintyjänä." },
-        { "text": "Joku hyppää järveen kiljuen", "tag": "jarvihyppy", "vibe_line": "{count}/{total} herää järveen hypänneen kiljaisuun, joka tapaus." },
-        { "text": "Kahvinkeittimen kutsuva pulputus", "tag": "kahvinkeitin", "vibe_line": "{count} henkilöä herää yksinomaan kahvinkeittimen kutsusta." }
+        {
+          "text": "Naapurin moottorisaha kello seitsemän",
+          "tag": "moottorisaha",
+          "vibe_line": "{count}/{total} herää moottorisahan ääneen, halusi tai ei."
+        },
+        {
+          "text": "Lintujen innokas kirkuna",
+          "tag": "linnunkirkuna",
+          "vibe_line": "{count} osallistujaa herää lintukuoron pääesiintyjänä."
+        },
+        {
+          "text": "Joku hyppää järveen kiljuen",
+          "tag": "järvihyppy",
+          "vibe_line": "{count}/{total} herää järveen hypänneen kiljaisuun, joka tapaus."
+        },
+        {
+          "text": "Kahvinkeittimen kutsuva pulputus",
+          "tag": "kahvinkeitin",
+          "vibe_line": "{count} henkilöä herää yksinomaan kahvinkeittimen kutsusta."
+        }
       ]
     },
     {
       "id": "sukkapakkaus",
       "text": "Kuinka monta sukkaparia mökkireissulle kuuluu pakata?",
       "options": [
-        { "text": "Yksi pari, optimismi kantaa pitkälle", "tag": "optimismi", "vibe_line": "{count}/{total} luottaa yhteen sukkapariin ja puhtaaseen optimismiin." },
-        { "text": "Seitsemän, yksi jokaista tunnetilaa varten", "tag": "tunnesukka", "vibe_line": "{count} osallistujaa pakkaa tunnesukan jokaiseen mielialaan." },
-        { "text": "Ei yhtään, eletään vaarallisesti", "tag": "sukatonvaara", "vibe_line": "{count}/{total} matkustaa ilman sukkia ja ilman katumusta." },
-        { "text": "Enemmän pareja kuin reissussa on päiviä", "tag": "ylipakkaus", "vibe_line": "{count} henkilöä pakkaa varmuuden vuoksi ylimääräisen aikaulottuvuuden verran sukkia." }
+        {
+          "text": "Yksi pari, optimismi kantaa pitkälle",
+          "tag": "optimismi",
+          "vibe_line": "{count}/{total} luottaa yhteen sukkapariin ja puhtaaseen optimismiin."
+        },
+        {
+          "text": "Seitsemän, yksi jokaista tunnetilaa varten",
+          "tag": "tunnesukka",
+          "vibe_line": "{count} osallistujaa pakkaa tunnesukan jokaiseen mielialaan."
+        },
+        {
+          "text": "Ei yhtään, eletään vaarallisesti",
+          "tag": "sukatonvaara",
+          "vibe_line": "{count}/{total} matkustaa ilman sukkia ja ilman katumusta."
+        },
+        {
+          "text": "Enemmän pareja kuin reissussa on päiviä",
+          "tag": "ylipakkaus",
+          "vibe_line": "{count} henkilöä pakkaa varmuuden vuoksi ylimääräisen aikaulottuvuuden verran sukkia."
+        }
       ]
     },
     {
       "id": "mokkidraama",
       "text": "Mikä näistä aiheuttaisi suurimman mökkidraaman?",
       "options": [
-        { "text": "Viimeinen makkara katoaa grillistä selittämättä", "tag": "makkara", "vibe_line": "{count}/{total} tunnistaa makkarakadon suurimmaksi mahdolliseksi kriisiksi." },
-        { "text": "Joku nukkuu vahingossa väärässä sängyssä", "tag": "vaarasanky", "vibe_line": "{count} osallistujaa on valmis puolustamaan sänkyään oikeusteitse." },
-        { "text": "WiFi-salasana on kadonnut eikä kukaan muista sitä", "tag": "wifikriisi", "vibe_line": "{count}/{total} pitää wifin katoamista lähes eksistentiaalisena uhkana." },
-        { "text": "Joku ehdottaa lautapeliä kello yksitoista illalla", "tag": "lautapeli", "vibe_line": "{count} henkilöä on valmis äänestämään myöhäisen lautapelin puolesta." }
+        {
+          "text": "Viimeinen makkara katoaa grillistä selittämättä",
+          "tag": "makkara",
+          "vibe_line": "{count}/{total} tunnistaa makkarakadon suurimmaksi mahdolliseksi kriisiksi."
+        },
+        {
+          "text": "Joku nukkuu vahingossa väärässä sängyssä",
+          "tag": "vääräsänky",
+          "vibe_line": "{count} osallistujaa on valmis puolustamaan sänkyään oikeusteitse."
+        },
+        {
+          "text": "WiFi-salasana on kadonnut eikä kukaan muista sitä",
+          "tag": "wifikriisi",
+          "vibe_line": "{count}/{total} pitää wifin katoamista lähes eksistentiaalisena uhkana."
+        },
+        {
+          "text": "Joku ehdottaa lautapeliä kello yksitoista illalla",
+          "tag": "lautapeli",
+          "vibe_line": "{count} henkilöä on valmis äänestämään myöhäisen lautapelin puolesta."
+        }
       ]
     },
     {
       "id": "ullakko-olento",
       "text": "Millainen olento todennäköisimmin asuu mökin ullakolla?",
       "options": [
-        { "text": "Ystävällinen mutta yllättävän äänekäs haamu", "tag": "haamu", "vibe_line": "{count}/{total} on valmis jakamaan ullakon äänekkään haamun kanssa." },
-        { "text": "Neljätoista pesäpallohanskaa ja niiden yhteinen henki", "tag": "hanskahenki", "vibe_line": "{count} osallistujaa uskoo hanskakokoelman kollektiiviseen tietoisuuteen." },
-        { "text": "Oravayhteisö, jolla on selkeä sisäinen hierarkia", "tag": "oravahierarkia", "vibe_line": "{count}/{total} kunnioittaa ullakon oravien johtajuusjärjestystä." },
-        { "text": "Ei mitään - ja juuri se on pelottavinta", "tag": "tyhjyys", "vibe_line": "{count} henkilöä pelkää tyhjää ullakkoa enemmän kuin täyttä." }
+        {
+          "text": "Ystävällinen mutta yllättävän äänekäs haamu",
+          "tag": "haamu",
+          "vibe_line": "{count}/{total} on valmis jakamaan ullakon äänekkään haamun kanssa."
+        },
+        {
+          "text": "Neljätoista pesäpallohanskaa ja niiden yhteinen henki",
+          "tag": "hanskahenki",
+          "vibe_line": "{count} osallistujaa uskoo hanskakokoelman kollektiiviseen tietoisuuteen."
+        },
+        {
+          "text": "Oravayhteisö, jolla on selkeä sisäinen hierarkia",
+          "tag": "oravahierarkia",
+          "vibe_line": "{count}/{total} kunnioittaa ullakon oravien johtajuusjärjestystä."
+        },
+        {
+          "text": "Ei mitään - ja juuri se on pelottavinta",
+          "tag": "tyhjyys",
+          "vibe_line": "{count} henkilöä pelkää tyhjää ullakkoa enemmän kuin täyttä."
+        }
       ]
     },
     {
       "id": "tunnelma-ruokana",
       "text": "Jos tämän hetken tunnelma olisi ruokalaji, mikä se olisi?",
       "options": [
-        { "text": "Lämmin karjalanpiirakka suoraan uunista", "tag": "karjalanpiirakka", "vibe_line": "{count}/{total} kokee tunnelman tuoreena karjalanpiirakkana." },
-        { "text": "Grillimakkara joka putosi hiekkaan mutta syötiin silti", "tag": "hiekkamakkara", "vibe_line": "{count} osallistujaa syö hiekkaisenkin makkaran periaatteesta." },
-        { "text": "Kolme päivää vanha, silti yllättävän hyvä lohikeitto", "tag": "lohikeitto", "vibe_line": "{count}/{total} luottaa ajan parantavan jopa keiton, ei vain haavat." },
-        { "text": "Jääkaapin takaosasta löytynyt nimetön purkki", "tag": "mysteeripurkki", "vibe_line": "{count} henkilöä avaisi mysteeripurkin uteliaisuudesta huolimatta riskeistä." }
+        {
+          "text": "Lämmin karjalanpiirakka suoraan uunista",
+          "tag": "karjalanpiirakka",
+          "vibe_line": "{count}/{total} kokee tunnelman tuoreena karjalanpiirakkana."
+        },
+        {
+          "text": "Grillimakkara joka putosi hiekkaan mutta syötiin silti",
+          "tag": "hiekkamakkara",
+          "vibe_line": "{count} osallistujaa syö hiekkaisenkin makkaran periaatteesta."
+        },
+        {
+          "text": "Kolme päivää vanha, silti yllättävän hyvä lohikeitto",
+          "tag": "lohikeitto",
+          "vibe_line": "{count}/{total} luottaa ajan parantavan jopa keiton, ei vain haavat."
+        },
+        {
+          "text": "Jääkaapin takaosasta löytynyt nimetön purkki",
+          "tag": "mysteeripurkki",
+          "vibe_line": "{count} henkilöä avaisi mysteeripurkin uteliaisuudesta huolimatta riskeistä."
+        }
       ]
     },
     {
       "id": "karkkipussi",
       "text": "Mikä on paras strategia karkkipussin jakamisessa?",
       "options": [
-        { "text": "Tasan kaikille, millilitran tarkkuudella", "tag": "tasajako", "vibe_line": "{count}/{total} vaatii karkkidemokratiaa millilitran tarkkuudella." },
-        { "text": "Se joka huutaa kovimmin, saa eniten", "tag": "aanekkyys", "vibe_line": "{count} osallistujaa uskoo karkkien kuuluvan äänekkäimmälle." },
-        { "text": "Parhaat piilotetaan itselle jo etukäteen", "tag": "salakahmaisyys", "vibe_line": "{count}/{total} on jo etukäteen turvannut parhaat karkit itselleen." },
-        { "text": "Karkkipussia ei jaeta, sitä vartioidaan", "tag": "vartiointi", "vibe_line": "{count} henkilöä näkee karkkipussin omaisuutena, ei resurssina." }
+        {
+          "text": "Tasan kaikille, millilitran tarkkuudella",
+          "tag": "tasajako",
+          "vibe_line": "{count}/{total} vaatii karkkidemokratiaa millilitran tarkkuudella."
+        },
+        {
+          "text": "Se joka huutaa kovimmin, saa eniten",
+          "tag": "äänekkyys",
+          "vibe_line": "{count} osallistujaa uskoo karkkien kuuluvan äänekkäimmälle."
+        },
+        {
+          "text": "Parhaat piilotetaan itselle jo etukäteen",
+          "tag": "salakähmäisyys",
+          "vibe_line": "{count}/{total} on jo etukäteen turvannut parhaat karkit itselleen."
+        },
+        {
+          "text": "Karkkipussia ei jaeta, sitä vartioidaan",
+          "tag": "vartiointi",
+          "vibe_line": "{count} henkilöä näkee karkkipussin omaisuutena, ei resurssina."
+        }
       ]
     },
     {
       "id": "sauna-maininta",
       "text": "Kuinka monta kertaa päivässä on soveliasta mainita sauna ääneen?",
       "options": [
-        { "text": "Kerran riittää, ollaan kohteliaita", "tag": "maltillisuus", "vibe_line": "{count}/{total} mainitsee saunan kerran ja säilyttää arvokkuutensa." },
-        { "text": "Vähintään seitsemän kertaa", "tag": "saunafanaatikko", "vibe_line": "{count} osallistujaa mainitsee saunan useammin kuin oman nimensä." },
-        { "text": "Jatkuvasti, sauna on elämäntapa eikä puheenaihe", "tag": "saunaelamantapa", "vibe_line": "{count}/{total} elää saunaa, ei vain mainitse sitä." },
-        { "text": "En mainitse, koska asun jo saunassa", "tag": "saunaasukki", "vibe_line": "{count} henkilöä on siirtänyt postiosoitteensa saunaan." }
+        {
+          "text": "Kerran riittää, ollaan kohteliaita",
+          "tag": "maltillisuus",
+          "vibe_line": "{count}/{total} mainitsee saunan kerran ja säilyttää arvokkuutensa."
+        },
+        {
+          "text": "Vähintään seitsemän kertaa",
+          "tag": "saunafanaatikko",
+          "vibe_line": "{count} osallistujaa mainitsee saunan useammin kuin oman nimensä."
+        },
+        {
+          "text": "Jatkuvasti, sauna on elämäntapa eikä puheenaihe",
+          "tag": "saunaelämäntapa",
+          "vibe_line": "{count}/{total} elää saunaa, ei vain mainitse sitä."
+        },
+        {
+          "text": "En mainitse, koska asun jo saunassa",
+          "tag": "saunaasukki",
+          "vibe_line": "{count} henkilöä on siirtänyt postiosoitteensa saunaan."
+        }
       ]
     },
     {
       "id": "energia-esine",
       "text": "Mikä näistä esineistä kuvaa parhaiten energiaasi juuri nyt?",
       "options": [
-        { "text": "Kiehuva vedenkeitin, hetkeä ennen klikkausta", "tag": "vedenkeitin", "vibe_line": "{count}/{total} on juuri nyt vedenkeitin sekunti ennen kiehumista." },
-        { "text": "Sammunut kynttilä, jossa on vielä savua", "tag": "kynttila", "vibe_line": "{count} osallistujaa palaa tunnelmallisesti mutta hallitusti loppuun." },
-        { "text": "Yliladattu akku, joka ei mahdu koteloonsa", "tag": "akku", "vibe_line": "{count}/{total} tuottaa enemmän energiaa kuin kehonsa kestää." },
-        { "text": "Verkkaisesti vaeltava pilvi", "tag": "pilvi", "vibe_line": "{count} henkilöä leijuu tänään täysin omassa tahdissaan." }
+        {
+          "text": "Kiehuva vedenkeitin, hetkeä ennen klikkausta",
+          "tag": "vedenkeitin",
+          "vibe_line": "{count}/{total} on juuri nyt vedenkeitin sekunti ennen kiehumista."
+        },
+        {
+          "text": "Sammunut kynttilä, jossa on vielä savua",
+          "tag": "kynttilä",
+          "vibe_line": "{count} osallistujaa palaa tunnelmallisesti mutta hallitusti loppuun."
+        },
+        {
+          "text": "Yliladattu akku, joka ei mahdu koteloonsa",
+          "tag": "akku",
+          "vibe_line": "{count}/{total} tuottaa enemmän energiaa kuin kehonsa kestää."
+        },
+        {
+          "text": "Verkkaisesti vaeltava pilvi",
+          "tag": "pilvi",
+          "vibe_line": "{count} henkilöä leijuu tänään täysin omassa tahdissaan."
+        }
       ]
     },
     {
       "id": "luonnonaani",
       "text": "Jos olisit äänite luonnosta, mikä olisit?",
       "options": [
-        { "text": "Aaltojen rauhallinen liplatus", "tag": "aallot", "vibe_line": "{count}/{total} soi sisäisesti kuin tyyni järven aalto." },
-        { "text": "Linnunlaulu kello neljä aamulla", "tag": "linnunlaulu", "vibe_line": "{count} osallistujaa herättää naapuruston täysin tahattomasti." },
-        { "text": "Tuulen hiljainen humina puiden latvoissa", "tag": "tuulenhumina", "vibe_line": "{count}/{total} kulkee elämän läpi kuin tuuli latvojen välissä." },
-        { "text": "Yksittäisen hyttysen surina juuri korvan vieressä", "tag": "hyttynen", "vibe_line": "{count} henkilöä on pieni mutta äärimmäisen huomiota herättävä läsnäolo." }
+        {
+          "text": "Aaltojen rauhallinen liplatus",
+          "tag": "aallot",
+          "vibe_line": "{count}/{total} soi sisäisesti kuin tyyni järven aalto."
+        },
+        {
+          "text": "Linnunlaulu kello neljä aamulla",
+          "tag": "linnunlaulu",
+          "vibe_line": "{count} osallistujaa herättää naapuruston täysin tahattomasti."
+        },
+        {
+          "text": "Tuulen hiljainen humina puiden latvoissa",
+          "tag": "tuulenhumina",
+          "vibe_line": "{count}/{total} kulkee elämän läpi kuin tuuli latvojen välissä."
+        },
+        {
+          "text": "Yksittäisen hyttysen surina juuri korvan vieressä",
+          "tag": "hyttynen",
+          "vibe_line": "{count} henkilöä on pieni mutta äärimmäisen huomiota herättävä läsnäolo."
+        }
       ]
     },
     {
       "id": "salainen-ovi",
       "text": "Mitä tekisit, jos löytäisit mökiltä oven, jota et ole koskaan huomannut?",
       "options": [
-        { "text": "Avaisin sen heti, seuraukset olkoot mitkä tahansa", "tag": "rohkeus", "vibe_line": "{count}/{total} avaisi tuntemattoman oven epäröimättä sekunninkaan." },
-        { "text": "En koskisi siihen, joitain mysteerejä pitää kunnioittaa", "tag": "kunnioitus", "vibe_line": "{count} osallistujaa jättäisi salaisen oven rauhaan, kunnioituksesta." },
-        { "text": "Kutsuisin koko porukan katsomaan todistajiksi ennen avaamista", "tag": "todistajat", "vibe_line": "{count}/{total} haluaa todistajia ennen kuin mitään mystistä avataan." },
-        { "text": "Ilmoittaisin siitä vasta lähtiessäni, viime hetkellä", "tag": "viivyttely", "vibe_line": "{count} henkilöä säästää parhaan (tai pahimman) uutisen aivan loppuun." }
+        {
+          "text": "Avaisin sen heti, seuraukset olkoot mitkä tahansa",
+          "tag": "rohkeus",
+          "vibe_line": "{count}/{total} avaisi tuntemattoman oven epäröimättä sekunninkaan."
+        },
+        {
+          "text": "En koskisi siihen, joitain mysteerejä pitää kunnioittaa",
+          "tag": "kunnioitus",
+          "vibe_line": "{count} osallistujaa jättäisi salaisen oven rauhaan, kunnioituksesta."
+        },
+        {
+          "text": "Kutsuisin koko porukan katsomaan todistajiksi ennen avaamista",
+          "tag": "todistajat",
+          "vibe_line": "{count}/{total} haluaa todistajia ennen kuin mitään mystistä avataan."
+        },
+        {
+          "text": "Ilmoittaisin siitä vasta lähtiessäni, viime hetkellä",
+          "tag": "viivyttely",
+          "vibe_line": "{count} henkilöä säästää parhaan (tai pahimman) uutisen aivan loppuun."
+        }
       ]
     },
     {
       "id": "sisainen-rauha",
       "text": "Mikä ääni kuvaa parhaiten sisäistä rauhaasi juuri nyt?",
       "options": [
-        { "text": "Järven hiljainen loiske laiturin alla", "tag": "jarvenloiske", "vibe_line": "{count}/{total} löytää sisäisen rauhansa laiturin alta kuuluvasta loiskeesta." },
-        { "text": "Grillin tyytyväinen sihinä", "tag": "grillinsihina", "vibe_line": "{count} osallistujaa rauhoittuu ainoastaan grillin sihinästä." },
-        { "text": "Täydellinen hiljaisuus juuri ennen ukkosmyrskyä", "tag": "myrskynedella", "vibe_line": "{count}/{total} on rauhallinen tavalla, joka enteilee jotain suurempaa." },
-        { "text": "Naurunremakka toisesta huoneesta", "tag": "naurunremakka", "vibe_line": "{count} henkilöä löytää rauhansa muiden iloisesta metelistä." }
+        {
+          "text": "Järven hiljainen loiske laiturin alla",
+          "tag": "järvenloiske",
+          "vibe_line": "{count}/{total} löytää sisäisen rauhansa laiturin alta kuuluvasta loiskeesta."
+        },
+        {
+          "text": "Grillin tyytyväinen sihinä",
+          "tag": "grillinsihinä",
+          "vibe_line": "{count} osallistujaa rauhoittuu ainoastaan grillin sihinästä."
+        },
+        {
+          "text": "Täydellinen hiljaisuus juuri ennen ukkosmyrskyä",
+          "tag": "myrskynedellä",
+          "vibe_line": "{count}/{total} on rauhallinen tavalla, joka enteilee jotain suurempaa."
+        },
+        {
+          "text": "Naurunremakka toisesta huoneesta",
+          "tag": "naurunremakka",
+          "vibe_line": "{count} henkilöä löytää rauhansa muiden iloisesta metelistä."
+        }
       ]
     }
   ]

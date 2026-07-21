@@ -21,7 +21,11 @@
     questions: [],
     answers: {},
     currentIndex: 0,
-    sawTeamsReady: false,
+    // Aikaleima viimeksi nahdysta joukkuetuloksesta. Admin voi muodostaa
+    // joukkueet uudelleen (esim. joku vastasi myohassa) - vertaamalla
+    // versiota (ei vain teams_ready-boolean) huomataan myos TOINEN
+    // paljastus, ei vain ensimmainen.
+    lastSeenTeamsVersion: null,
   };
 
   try {
@@ -72,6 +76,8 @@
     if (!res.ok) throw new Error((await safeDetail(res)) || `POST ${path} epäonnistui`);
     return res.json();
   }
+
+  // fetchWithRetry tulee teams-reveal.js:sta (jaettu seka taman etta admin.js:n kanssa).
 
   // -------------------------------------------------------------------
   // Nakymien hallinta ja toast-ilmoitukset
@@ -249,26 +255,47 @@
     waitingCounter.textContent = `${data.completed} / ${data.total}`;
   }
 
-  function enterWaitingRoom() {
-    showView("view-waiting");
-    state.sawTeamsReady = !!(latestState && latestState.teams_ready);
-    if (latestState) updateWaitingCounter(latestState);
+  /**
+   * Palauttaa true jos data edustaa UUTTA joukkuetulosta jota ei ole viela
+   * naytetty (admin voi muodostaa joukkueet uudelleen esim. jos joku vastasi
+   * myohassa - silloin jokaisen pitaa nahda uusi paljastus, ei vain ensimmainen).
+   */
+  function isNewTeamsReveal(data) {
+    if (!data.teams_ready) return false;
+    const isNew = data.teams_version !== state.lastSeenTeamsVersion;
+    state.lastSeenTeamsVersion = data.teams_version;
+    return isNew;
+  }
 
+  // Rekisteroidaan kerran koko sivulatauksen ajaksi - havaitsee seka
+  // ensimmaisen etta myohemmat (uudelleenmuodostetut) joukkuetulokset,
+  // riippumatta missa vaiheessa kayttaja sattuu olemaan.
+  function registerTeamsWatcher() {
     onState((data) => {
       if (isViewActive("view-waiting")) {
         updateWaitingCounter(data);
       }
-      if (data.teams_ready && !state.sawTeamsReady) {
-        state.sawTeamsReady = true;
-        if (isViewActive("view-waiting")) {
+      const isNew = isNewTeamsReveal(data);
+      if (data.teams_ready && isNew) {
+        if (
+          isViewActive("view-waiting") ||
+          isViewActive("view-calculating") ||
+          isViewActive("view-results")
+        ) {
           playCalculationThenReveal(data.teams);
         }
-      } else if (data.teams_ready && isViewActive("view-waiting")) {
+      } else if (data.teams_ready && !isNew && isViewActive("view-waiting")) {
         showResults(data.teams);
       }
     });
+  }
+
+  function enterWaitingRoom() {
+    showView("view-waiting");
+    if (latestState) updateWaitingCounter(latestState);
 
     if (latestState && latestState.teams_ready) {
+      state.lastSeenTeamsVersion = latestState.teams_version;
       showResults(latestState.teams);
     }
   }
@@ -291,11 +318,30 @@
   // -------------------------------------------------------------------
   // Kaynnistys / tilan palautus
   // -------------------------------------------------------------------
+  const loadingText = document.getElementById("loading-text");
+  const loadingRetryBtn = document.getElementById("btn-loading-retry");
+  let wsInitialized = false;
+
+  function setLoadingMessage(attempt) {
+    if (!loadingText) return;
+    loadingText.textContent =
+      attempt <= 2
+        ? "Ladataan..."
+        : "Herätellään analyysijärjestelmää - tämä voi kestää hetken...";
+  }
+
   async function bootstrap() {
+    showView("view-loading");
+    if (loadingRetryBtn) loadingRetryBtn.style.display = "none";
+    setLoadingMessage(1);
+
     try {
-      state.questions = await apiGet("/api/questions");
+      state.questions = await fetchWithRetry(() => apiGet("/api/questions"), {
+        onAttempt: setLoadingMessage,
+      });
     } catch (e) {
-      showToast("Kysymysten lataus epäonnistui. Lataa sivu uudelleen.");
+      if (loadingText) loadingText.textContent = "Yhteys palvelimeen ei onnistunut.";
+      if (loadingRetryBtn) loadingRetryBtn.style.display = "";
       return;
     }
 
@@ -305,7 +351,11 @@
       // Ei kriittinen - WebSocket paivittaa taman pian.
     }
 
-    connectWebSocket();
+    if (!wsInitialized) {
+      wsInitialized = true;
+      connectWebSocket();
+      registerTeamsWatcher();
+    }
 
     if (!state.token) {
       showView("view-landing");
@@ -313,7 +363,9 @@
     }
 
     try {
-      const me = await apiGet(`/api/me/${state.token}`);
+      const me = await fetchWithRetry(() => apiGet(`/api/me/${state.token}`), {
+        onAttempt: setLoadingMessage,
+      });
       if (!me.exists) {
         localStorage.removeItem(STORAGE_KEYS.token);
         state.token = null;
@@ -322,6 +374,7 @@
       }
 
       if (me.teams_ready) {
+        state.lastSeenTeamsVersion = me.teams_version;
         showResults(me.teams);
         return;
       }
@@ -333,8 +386,13 @@
 
       startSurvey();
     } catch (e) {
-      showView("view-landing");
+      if (loadingText) loadingText.textContent = "Yhteys palvelimeen ei onnistunut.";
+      if (loadingRetryBtn) loadingRetryBtn.style.display = "";
     }
+  }
+
+  if (loadingRetryBtn) {
+    loadingRetryBtn.addEventListener("click", bootstrap);
   }
 
   document.addEventListener("DOMContentLoaded", bootstrap);

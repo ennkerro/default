@@ -35,10 +35,21 @@
     <div class="section-title">Osallistujat</div>
     <ul class="participant-list" id="participant-list"></ul>
 
+    <div class="section-title">Kysymykset</div>
+    <button class="btn btn-ghost" id="btn-open-questions">✏️ Muokkaa kysymyksiä</button>
+
     <div class="section-title">Joukkueiden muodostus</div>
+    <div class="team-count-row">
+      <span class="team-count-label">Joukkueiden määrä</span>
+      <div class="team-count-stepper">
+        <button class="stepper-btn" id="btn-team-count-minus" type="button">&minus;</button>
+        <span class="team-count-value" id="team-count-value">4</span>
+        <button class="stepper-btn" id="btn-team-count-plus" type="button">+</button>
+      </div>
+    </div>
     <button class="btn btn-primary" id="btn-form-teams" disabled>Muodosta joukkueet</button>
     <p style="font-size:0.8rem;margin-top:10px;">
-      Tarvitaan vähintään kaksi vastannutta. Joukkueita muodostuu neljä kappaletta,
+      Tarvitaan vähintään kaksi vastannutta. Joukkueet muodostetaan
       mahdollisimman samanhenkisistä vastaajista - ei tasakokoisista.
     </p>
   </section>
@@ -53,6 +64,33 @@
       <button class="btn btn-ghost" id="btn-back-to-admin" style="width:auto;padding:10px 16px;">&larr; Hallintaan</button>
     </div>
     <div id="admin-results-container"></div>
+  </section>
+
+  <section class="view" id="view-admin-questions">
+    <div class="admin-header">
+      <div class="eyebrow"><span class="dot"></span> Kysymyspankki</div>
+      <button class="btn btn-ghost" id="btn-questions-back" style="width:auto;padding:10px 16px;">&larr; Hallintaan</button>
+    </div>
+    <p style="font-size:0.82rem;">
+      Muokkaa, poista tai lisää kysymyksiä vapaasti. Muutokset tallentuvat vasta
+      kun painat "Tallenna muutokset". Kysymysten muokkaaminen kesken kyselyn
+      voi sekoittaa jo annettuja vastauksia - tee muutokset mieluiten ennen
+      kuin kaverit alkavat vastata.
+    </p>
+
+    <div id="questions-list"></div>
+
+    <button class="btn btn-ghost" id="btn-add-question" type="button" style="margin-top:6px;">+ Lisää kysymys</button>
+
+    <div class="questions-actions">
+      <button class="btn btn-primary" id="btn-save-questions">Tallenna muutokset</button>
+      <div class="questions-secondary-actions">
+        <button class="btn btn-ghost" id="btn-export-questions" type="button">Lataa varmuuskopio</button>
+        <button class="btn btn-ghost" id="btn-import-questions" type="button">Tuo tiedostosta</button>
+        <button class="btn btn-ghost" id="btn-reset-questions" type="button">Palauta oletukset</button>
+      </div>
+      <input type="file" id="file-import-questions" accept="application/json" style="display:none;" />
+    </div>
   </section>
 
 </div>
