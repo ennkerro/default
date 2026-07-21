@@ -1,0 +1,14 @@
+# Render.com Blueprint - mahdollistaa sovelluksen julkaisun ilmaiseksi
+# ilman paikallista Python-asennusta. Kayttoohje: README.md kohta
+# "Ilmainen nettiversio (Render)".
+services:
+  - type: web
+    name: kukonharjun-vibe-analyysi
+    runtime: python
+    plan: free
+    autoDeploy: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    envVars:
+      - key: ADMIN_TOKEN
+        sync: false

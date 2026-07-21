@@ -10,7 +10,46 @@ Tekninen toteutus on tarkoituksella yksinkertainen: **Python-backend (FastAPI)
 pilvipalveluita, ei nettiyhteyttä vaativia CDN-riippuvuuksia. Kaikki toimii
 myös pelkässä mökin WiFi-lähiverkossa ilman internetiä.
 
-## Pikakäynnistys
+## Ilmainen nettiversio (Render) - ei paikallista asennusta
+
+Jos et halua asentaa mitään omalle koneellesi (ei Pythonia, ei Terminaalia),
+sovelluksen voi julkaista ilmaiseksi osoitteeseen `https://jokin-nimi.onrender.com`.
+Tämän jälkeen sekä admin että osallistujat vain avaavat linkin selaimessa -
+toimii myös mobiilidatalla, ja sama linkki on käytettävissä myös ensi vuonna.
+
+**Kertaluontoinen käyttöönotto (n. 10 min):**
+
+1. Mene osoitteeseen [render.com](https://render.com) ja luo tili ("Get Started" -> "Sign up with GitHub" on helpoin).
+2. Dashboardissa: **New +** -> **Blueprint**.
+3. Valitse tämä GitHub-repositorio (`ennkerro/default`) ja branch
+   `claude/kukonharjun-vibe-analyysi-npky9y`. Render löytää automaattisesti
+   tämän repon `render.yaml`-tiedoston ja ehdottaa valmiiksi täytettyä palvelua.
+4. Kysyttäessä `ADMIN_TOKEN`-arvoa, liitä oma salainen tunnuksesi (voit
+   keksiä minkä tahansa, esim. jokin ei-arvattava sanayhdistelmä).
+5. Paina **Apply** / **Create Web Service**. Ensimmäinen julkaisu kestää
+   pari minuuttia.
+6. Kun se on valmis, Render näyttää julkisen osoitteen, esim.
+   `https://kukonharjun-vibe-analyysi.onrender.com`. Admin-paneeli on
+   samassa osoitteessa polussa `/admin/<ADMIN_TOKEN jonka annoit vaiheessa 4>`.
+
+**Kaksi asiaa jotka kannattaa tietää ilmaisesta tasosta:**
+
+- Palvelu "nukahtaa" 15 minuutin jouten olon jälkeen. Ensimmäinen avaus sen
+  jälkeen kestää ~30-60 sekuntia herätä. Avaa admin-linkki pari minuuttia
+  ennen aloitusta, niin se on jo hereillä kun kaverit skannaavat QR-koodin.
+- Levytila on väliaikainen: jos palvelu joutuu nukkumaan kesken kaiken
+  (esim. 15 minuutin täysin hiljainen tauko kesken kyselyn), kertyneet
+  vastaukset katoavat ja osallistujien pitäisi vastata uudelleen. Tämä on
+  epätodennäköistä kun porukka on aktiivisesti käyttämässä sovellusta
+  (kenen tahansa toiminta pitää palvelun hereillä), mutta jos haluat
+  nollariskin, voit lisäksi asettaa ilmaisen "pingaus"-palvelun kuten
+  [cron-job.org](https://cron-job.org) käymään osoitteessasi n. 10 min
+  välein - täysin valinnainen lisävarmistus, ei pakollinen.
+
+Ensi vuonna: avaa sama Render-osoite, paina admin-paneelista **"Nollaa"**,
+ja peli on valmis uudelle porukalle - ei mitään uudelleenasennusta.
+
+## Paikallinen pikakäynnistys (oma kone / mökin lähiverkko)
 
 ```bash
 pip install -r requirements.txt
@@ -155,10 +194,3 @@ viikonloppuna eri porukalla. Kysymyspankki ja admin-tunnus säilyvät ennallaan.
 | `HOST`        | `0.0.0.0`     | Kuunneltava osoite                        |
 | `ADMIN_TOKEN` | (generoidaan) | Pakota tietty admin-URL-tunnus            |
 | `TEAM_COUNT`  | `4`           | Kuinka moneen joukkueeseen jaetaan         |
-
-## Deployment vaihtoehtoisesti pilveen
-
-Sovellus toimii sellaisenaan myös esim. Renderissä, Fly.io:ssa tai muussa
-Python-yhteensopivassa palvelussa, jos mökillä ei ole omaa konetta jota
-pitää palvelimena. Tällöin `ADMIN_TOKEN` kannattaa asettaa itse
-ympäristömuuttujana, ja QR-koodi osoittaa saatuun julkiseen osoitteeseen.
