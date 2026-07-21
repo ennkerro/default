@@ -620,9 +620,9 @@ button {
 
 .compat-ring {
   position: relative;
-  width: 136px;
-  height: 136px;
-  margin: 2px auto 24px;
+  width: 180px;
+  height: 180px;
+  margin: 4px auto 26px;
 }
 
 .compat-ring-svg {
@@ -661,14 +661,14 @@ button {
 
 .compat-ring-value {
   font-family: var(--font-mono);
-  font-size: 1.9rem;
+  font-size: 2.3rem;
   font-weight: 800;
   color: var(--color-text);
 }
 
 .compat-ring-sign {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--color-text);
   margin-left: 1px;
@@ -676,11 +676,13 @@ button {
 
 .compat-ring-caption {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-text-faint);
-  margin-top: 3px;
+  margin-top: 4px;
+  padding: 0 8px;
+  text-align: center;
 }
 
 .reasons-heading {
