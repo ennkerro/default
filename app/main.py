@@ -12,9 +12,6 @@ Reititys:
   POST /api/admin/{secret}/form-teams   muodosta joukkueet
   POST /api/admin/{secret}/reset        nollaa koko tapahtuma
   GET  /api/admin/{secret}/qr           QR-koodi osallistumisosoitteeseen (PNG)
-  GET  /api/admin/{secret}/questions            kysymyspankki muokkausta varten
-  PUT  /api/admin/{secret}/questions            tallenna muokattu kysymyspankki
-  POST /api/admin/{secret}/questions/reset-defaults   palauta alkuperaiset kysymykset
   WS   /ws                        reaaliaikaiset tilapaivitykset kaikille
 """
 import io
@@ -30,20 +27,8 @@ from fastapi.staticfiles import StaticFiles
 from app import database
 from app.clustering import form_teams
 from app.config import ADMIN_TOKEN, STATIC_DIR, TEAM_COUNT
-from app.models import (
-    FormTeamsRequest,
-    QuestionsUpdateRequest,
-    RegisterRequest,
-    RegisterResponse,
-    SubmitRequest,
-)
-from app.questions_data import (
-    load_questions,
-    normalize_questions,
-    public_questions,
-    question_ids,
-    reset_to_defaults,
-)
+from app.models import FormTeamsRequest, RegisterRequest, RegisterResponse, SubmitRequest
+from app.questions_data import load_questions, public_questions, question_ids
 from app.team_generator import generate_teams
 from app.ws_manager import manager
 
@@ -145,12 +130,17 @@ async def submit(payload: SubmitRequest):
     if participant is None:
         raise HTTPException(status_code=404, detail="Tuntematon osallistuja - aloita alusta.")
 
-    valid_ids = set(question_ids())
+    questions_by_id = {q["id"]: q for q in load_questions()}
     submitted_ids = set(payload.answers.keys())
-    if submitted_ids != valid_ids:
+    if submitted_ids != set(questions_by_id.keys()):
         raise HTTPException(status_code=400, detail="Vastaukset eivat kata kaikkia kysymyksia.")
-    if any(not (0 <= idx <= 3) for idx in payload.answers.values()):
-        raise HTTPException(status_code=400, detail="Virheellinen vastausvaihtoehto.")
+    # Kysymyksilla voi olla 2-4 vaihtoehtoa, joten sallittu vali tarkistetaan
+    # jokaiselle kysymykselle erikseen sen omaa vaihtoehtomaaraa vasten -
+    # ei kiinteaa 0-3 valia, joka hyvaksyisi vaarin esim. indeksin 3
+    # kaksivaihtoehtoiselle kysymykselle.
+    for qid, idx in payload.answers.items():
+        if not (0 <= idx < len(questions_by_id[qid]["options"])):
+            raise HTTPException(status_code=400, detail="Virheellinen vastausvaihtoehto.")
 
     database.save_answers(participant["id"], payload.answers)
     await _broadcast_state()
@@ -205,29 +195,6 @@ async def admin_qr(secret: str, request: Request):
     img.save(buf, format="PNG")
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
-
-
-@app.get("/api/admin/{secret}/questions")
-async def admin_get_questions(secret: str):
-    _check_admin(secret)
-    return {"questions": load_questions()}
-
-
-@app.put("/api/admin/{secret}/questions")
-async def admin_update_questions(secret: str, payload: QuestionsUpdateRequest):
-    _check_admin(secret)
-    try:
-        normalized = normalize_questions(payload.questions)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    database.save_question_bank(normalized)
-    return {"questions": normalized}
-
-
-@app.post("/api/admin/{secret}/questions/reset-defaults")
-async def admin_reset_questions(secret: str):
-    _check_admin(secret)
-    return {"questions": reset_to_defaults()}
 
 
 # ---------------------------------------------------------------------------

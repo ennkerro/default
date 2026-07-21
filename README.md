@@ -1,10 +1,10 @@
 # Kukonharjun Psykologinen Vibe-analyysi v4.2
 
 Yhden sivun web-sovellus mökkiporukan "psykologiseen" (täysin absurdiin)
-vibe-analyysiin. Osallistujat skannaavat QR-koodin, vastaavat 25 järjettömän
-hauskaan monivalintakysymykseen, ja sovellus muodostaa automaattisesti
-joukkueet (oletuksena 4, admin voi valita 2-10) niin, että samanhenkisimmät
-vastaajat päätyvät samaan joukkueeseen.
+vibe-analyysiin. Osallistujat skannaavat QR-koodin, vastaavat 15 järjettömän
+hauskaan monivalintakysymykseen (2-4 vaihtoehtoa per kysymys), ja sovellus
+muodostaa automaattisesti joukkueet (oletuksena 4, admin voi valita 2-10)
+niin, että samanhenkisimmät vastaajat päätyvät samaan joukkueeseen.
 
 Tekninen toteutus on tarkoituksella yksinkertainen: **Python-backend (FastAPI)
 + SQLite + puhdas HTML/CSS/JS-frontend**, ei build-vaihetta, ei ulkoisia
@@ -110,41 +110,22 @@ Vaihtoehtoisesti `ngrok http 8000` toimii samalla periaatteella, mutta vaatii
 ilmaisen tilin ja tunnuksen (`ngrok config add-authtoken ...`) ensimmäisellä
 kerralla.
 
-## Miten kysymyksiä muokataan
+## Kysymykset
 
-**Helpoin tapa - admin-paneelista, ei koodia tarvita:** avaa admin-paneeli ja
-paina "✏️ Muokkaa kysymyksiä". Sieltä voit:
-
-- muokata minkä tahansa kysymyksen tai vaihtoehdon tekstiä suoraan
-- poistaa tylsät kysymykset (roskakori-ikoni)
-- lisätä uusia kysymyksiä ("+ Lisää kysymys" - täytä teksti ja neljä vaihtoehtoa)
-- palauttaa alkuperäiset 25 oletuskysymystä ("Palauta oletukset")
-- ladata varmuuskopion nykyisistä kysymyksistä tiedostoksi omalle koneelle, ja
-  tuoda se takaisin myöhemmin ("Lataa varmuuskopio" / "Tuo tiedostosta")
-
-Muista painaa **"Tallenna muutokset"** - muokkaukset eivät tallennu ilman sitä.
-Kysymysten muokkaaminen kannattaa tehdä ennen kuin kaverit alkavat vastata,
-ei kesken kyselyn.
-
-**Huom Render-version käyttäjille:** kysymyspankki tallentuu samaan
-väliaikaiseen levytilaan kuin osallistujatkin (ks. yllä oleva kohta ilmaisen
-tason rajoituksista) - jos palvelu joutuu nukkumaan pitkäksi aikaa muokkauksen
-ja pelin välillä, muokkaukset voivat kadota. Jos olet tehnyt paljon omia
-kysymyksiä, ota varmuuskopio ("Lataa varmuuskopio") ja tuo se tarvittaessa
-takaisin ennen peli-iltaa.
-
-**Teknisempi vaihtoehto - questions.json suoraan:** kysymysten alkuperäinen
-"tehdasasetus" asuu tiedostossa [`app/questions.json`](app/questions.json) ja
-sitä käytetään aina kun tietokannassa ei vielä ole yhtään kysymystä tai kun
-painat "Palauta oletukset". Jokainen kysymys on JSON-olio, jossa on `id`,
-`text` ja neljä `options`-oliota:
+Kysymykset ovat kiinteät - admin-paneelissa ei ole muokkausominaisuutta
+(tietoisesti jätetty pois, jotta lopullinen kysymyssetti pysyy vakaana eikä
+sitä voi vahingossa muuttaa kesken illan). Kysymykset asuvat tiedostossa
+[`app/questions.json`](app/questions.json). Jokainen kysymys on JSON-olio,
+jossa on `id`, `text` ja **2-4** `options`-oliota (ei tarvitse olla aina
+tasan neljä):
 
 ```json
 {
-  "id": "kirjanpitaja-elain",
-  "text": "Mikä eläin olisi paras kirjanpitäjä?",
+  "id": "pimea-huone-toinen",
+  "text": "Pimeässä huoneessa on varmasti toinen näistä:",
   "options": [
-    { "text": "Mehiläinen – järjestelmällinen ja ahkera", "tag": "mehilainen", "vibe_line": "{count}/{total} luottaisi kirjanpitonsa mehiläiselle epäröimättä." }
+    { "text": "Klovni", "tag": "klovni", "vibe_line": "{count}/{total} tietää, että pimeässä huoneessa odottaa juuri klovni." },
+    { "text": "Verovirkailija", "tag": "verovirkailija", "vibe_line": "{count} osallistujaa pelkää verovirkailijaa enemmän kuin mitään yliluonnollista." }
   ]
 }
 ```
@@ -152,15 +133,15 @@ painat "Palauta oletukset". Jokainen kysymys on JSON-olio, jossa on `id`,
 - `text` / option-`text`: näkyy sellaisenaan osallistujalle.
 - `tag`: yksi sana (pieni alkukirjain), jota käytetään jos tämä vaihtoehto
   osoittautuu jonkin joukkueen tunnusomaisimmaksi vastaukseksi - se syötetään
-  joukkueen nimigeneraattoriin (`app/content.py`, `NAME_TEMPLATES`). Admin-
-  paneelin kautta lisätyille kysymyksille tämä päätellään automaattisesti.
+  joukkueen nimigeneraattoriin (`app/content.py`, `NAME_TEMPLATES`).
 - `vibe_line`: valmiiksi kirjoitettu perustelulause tulossivun "Miksi juuri
   te?" -osioon. Placeholderit `{count}`, `{total}` ja `{percent}` täytetään
-  automaattisesti oikeilla luvuilla. Jos puuttuu, käytetään yleispätevää
-  varalausetta - admin-paneelin kautta lisätyt kysymykset toimivat siis aina,
-  vaikka valmista perustelulausetta ei kirjoitettaisikaan.
+  automaattisesti oikeilla luvuilla.
 
-Kysymysten määrän ei tarvitse olla tasan 25 - mikä tahansa määrä toimii.
+Kysymysten tai vaihtoehtojen muokkaaminen vaatii siis tiedoston muokkaamisen
+ja uuden julkaisun (paikallisesti suoraan, Renderissä commit + push + Manual
+Deploy). Kysymysten määrän ei tarvitse olla tasan 15 - mikä tahansa määrä
+toimii, kunhan jokaisella on vähintään 2 ja enintään 4 vaihtoehtoa.
 
 ## Projektirakenne
 
@@ -172,8 +153,8 @@ app/
   clustering.py       Samankaltaisuuslaskenta ja joukkueiden muodostus
   team_generator.py   Joukkueen nimi, perustelut ja loppukaneetti
   content.py          Nimimallit ja loppukaneettien pankki
-  questions.json       Kysymyspankin oletussisältö ("tehdasasetus")
-  questions_data.py    Kysymyspankin lataus tietokannasta, validointi, oletusten palautus
+  questions.json       Kysymyspankki (muokattava, ei admin-UI:ta)
+  questions_data.py    Kysymysten lataus/välimuisti
   ws_manager.py        WebSocket-yleislähetys
   config.py            Asetukset (portti, admin-tunnus, tietokantapolku)
 static/

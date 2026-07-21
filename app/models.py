@@ -21,13 +21,6 @@ class FormTeamsRequest(BaseModel):
     team_count: int | None = Field(default=None, ge=2, le=10)
 
 
-class QuestionsUpdateRequest(BaseModel):
-    # Vapaamuotoinen - tarkka validointi ja siistiminen tehdaan
-    # questions_data.normalize_questions():ssa, jotta virheviestit voivat
-    # olla kuvaavampia kuin Pydanticin oletusviestit.
-    questions: list[dict]
-
-
 class ParticipantState(BaseModel):
     exists: bool
     name: str | None = None

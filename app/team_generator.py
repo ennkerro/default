@@ -71,14 +71,20 @@ def _score_questions(
 def _build_reason(entry: dict) -> str:
     question = entry["question"]
     option = question["options"][entry["option_index"]]
-    percent = round(entry["count"] / entry["total"] * 100, 1) if entry["total"] else 0.0
+    count = entry["count"]
+    percent = round(count / entry["total"] * 100, 1) if entry["total"] else 0.0
     template = option.get("vibe_line") or GENERIC_FALLBACK_TEMPLATE
     return template.format(
-        count=entry["count"],
+        count=count,
         total=entry["total"],
         percent=_format_percent(percent),
         question=question["text"],
         option=option["text"],
+        # Suomen kielioppi: "1 henkilö" (nominatiivi) mutta "2 henkilöä" (partitiivi) -
+        # nama taytetaan oikein taivutettuina, jotta vibe_line-tekstit pysyvat
+        # kieliopillisesti oikeina myos silloin kun count on 1.
+        henkilo_sana="henkilö" if count == 1 else "henkilöä",
+        osallistuja_sana="osallistuja" if count == 1 else "osallistujaa",
     )
 
 

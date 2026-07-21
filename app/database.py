@@ -55,12 +55,6 @@ def init_db() -> None:
                 teams_json TEXT NOT NULL,
                 created_at TEXT NOT NULL
             );
-
-            CREATE TABLE IF NOT EXISTS question_bank (
-                id INTEGER PRIMARY KEY CHECK (id = 1),
-                questions_json TEXT NOT NULL,
-                updated_at TEXT NOT NULL
-            );
             """
         )
         conn.commit()
@@ -170,26 +164,5 @@ def reset_all() -> None:
             DELETE FROM participants;
             DELETE FROM results;
             """
-        )
-        conn.commit()
-    # Huom: question_bank EI tyhjenny nollauksessa - admin muokkaamat
-    # kysymykset ovat tapahtumasta riippumattomia ja sailyvat kayttoon myos
-    # seuraavalla kerralla.
-
-
-def get_question_bank() -> Optional[list[dict]]:
-    with _connect() as conn:
-        row = conn.execute("SELECT questions_json FROM question_bank WHERE id = 1").fetchone()
-        return json.loads(row["questions_json"]) if row else None
-
-
-def save_question_bank(questions: list[dict]) -> None:
-    with _write_lock, _connect() as conn:
-        conn.execute(
-            """
-            INSERT INTO question_bank (id, questions_json, updated_at) VALUES (1, ?, ?)
-            ON CONFLICT(id) DO UPDATE SET questions_json = excluded.questions_json, updated_at = excluded.updated_at
-            """,
-            (json.dumps(questions), _now()),
         )
         conn.commit()
