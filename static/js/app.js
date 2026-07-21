@@ -11,6 +11,7 @@
   const STORAGE_KEYS = {
     token: "vibe_token",
     name: "vibe_name",
+    participantId: "vibe_participant_id",
     answers: "vibe_answers",
     index: "vibe_index",
   };
@@ -18,6 +19,9 @@
   const state = {
     token: localStorage.getItem(STORAGE_KEYS.token) || null,
     name: localStorage.getItem(STORAGE_KEYS.name) || "",
+    // Oma osallistuja-id - taman avulla loydetaan OMA joukkue teams-listasta
+    // (member_ids), jotta nayta vain oma joukkue, ei kaikkia.
+    participantId: parseInt(localStorage.getItem(STORAGE_KEYS.participantId), 10) || null,
     questions: [],
     answers: {},
     currentIndex: 0,
@@ -161,8 +165,10 @@
       const res = await apiPost("/api/register", { name });
       state.token = res.token;
       state.name = res.name;
+      state.participantId = res.id;
       localStorage.setItem(STORAGE_KEYS.token, res.token);
       localStorage.setItem(STORAGE_KEYS.name, res.name);
+      localStorage.setItem(STORAGE_KEYS.participantId, String(res.id));
       clearProgress();
       startSurvey();
     } catch (e) {
@@ -312,7 +318,14 @@
   function showResults(teams) {
     showView("view-results");
     const container = document.getElementById("results-container");
-    renderReveal(container, teams);
+    const myTeam = (teams || []).find(
+      (t) => Array.isArray(t.member_ids) && t.member_ids.includes(state.participantId)
+    );
+    if (myTeam) {
+      renderMyTeam(container, myTeam);
+    } else {
+      renderNoTeamFound(container);
+    }
   }
 
   // -------------------------------------------------------------------
@@ -372,6 +385,9 @@
         showView("view-landing");
         return;
       }
+
+      state.participantId = me.id;
+      localStorage.setItem(STORAGE_KEYS.participantId, String(me.id));
 
       if (me.teams_ready) {
         state.lastSeenTeamsVersion = me.teams_version;

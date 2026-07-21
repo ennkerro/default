@@ -141,6 +141,7 @@ def generate_teams(
                 "emoji": TEAM_EMOJIS[(team_number - 1) % len(TEAM_EMOJIS)],
                 "name": name,
                 "members": [names_by_id[pid] for pid in cluster],
+                "member_ids": list(cluster),
                 "reasons": reasons,
                 "diagnosis": diagnosis,
                 "compatibility_percent": compat,

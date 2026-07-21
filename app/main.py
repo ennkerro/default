@@ -116,6 +116,7 @@ async def get_me(token: str):
     teams = database.get_results()
     return {
         "exists": True,
+        "id": participant["id"],
         "name": participant["name"],
         "completed": bool(participant["completed_at"]),
         "teams_ready": teams is not None,

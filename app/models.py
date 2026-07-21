@@ -46,6 +46,7 @@ class TeamResult(BaseModel):
     emoji: str
     name: str
     members: list[str]
+    member_ids: list[int]
     reasons: list[str]
     diagnosis: str
     compatibility_percent: float
