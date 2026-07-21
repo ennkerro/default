@@ -38,6 +38,38 @@ Admin-paneeli (pidä salassa):
 Kaikkien osallistujien puhelinten pitää olla samassa WiFi-verkossa kuin kone,
 jolla palvelin pyörii. Sovellus ei tarvitse toimiakseen internet-yhteyttä.
 
+## Osallistujat mobiilidatalla (ei samassa WiFissä)
+
+Jos osa porukasta ei ole samassa WiFi-verkossa - esim. käyttävät mobiilidataa -
+edellä tulostettu `192.168.x.x`-osoite ei toimi heille, koska se näkyy vain
+samassa lähiverkossa. Ratkaisu on avata koneelta väliaikainen julkinen tunneli
+paikalliseen palvelimeen. Helpoin tapa, ei vaadi rekisteröitymistä:
+
+```bash
+brew install cloudflared      # jos ei jo asennettuna
+python run.py                 # käynnistä sovellus ensin, jää pyörimään
+cloudflared tunnel --url http://localhost:8000    # toisessa terminaalissa
+```
+
+`cloudflared` tulostaa julkisen osoitteen muotoa
+`https://joku-satunnainen-nimi.trycloudflare.com`. Käytä **tätä** osoitetta
+(et enää `192.168.x.x`-osoitetta) sekä:
+
+- osallistujien QR-koodin/linkin pohjana, ja
+- **admin-paneelin avaamiseen omalla koneellasi** - eli mene osoitteeseen
+  `https://joku-satunnainen-nimi.trycloudflare.com/admin/<salainen-tunnus>`,
+  et `localhost`-osoitteeseen. Tämä on tärkeää: admin-sivu generoi QR-koodin
+  sen osoitteen perusteella jolla sivu itse avattiin, joten jos avaat
+  adminin `localhost`-osoitteesta, QR-koodi osoittaisi puhelimille
+  toimimattomaan `localhost`-osoitteeseen.
+
+Tunneli pysyy voimassa niin kauan kuin `cloudflared`-komento on käynnissä.
+Kun ilta on ohi, `Ctrl+C` molemmissa terminaaleissa riittää sulkemaan kaiken.
+
+Vaihtoehtoisesti `ngrok http 8000` toimii samalla periaatteella, mutta vaatii
+ilmaisen tilin ja tunnuksen (`ngrok config add-authtoken ...`) ensimmäisellä
+kerralla.
+
 ## Miten kysymyksiä muokataan
 
 Kaikki 25 kysymystä asuvat tiedostossa [`app/questions.json`](app/questions.json).

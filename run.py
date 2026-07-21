@@ -7,6 +7,13 @@ Kaynnista sovellus komennolla:
 
 Sovellus on talloin kaytettavissa osoitteessa http://<taman-koneen-ip>:8000
 kaikille samassa (mokin) WiFi-verkossa oleville laitteille.
+
+Jos osallistujat eivat ole samassa WiFi-verkossa (esim. mobiilidatalla),
+tama paikallinen osoite ei riita - tarvitaan julkinen tunneli, esim.:
+
+    cloudflared tunnel --url http://localhost:8000
+
+Kaytannon ohjeet README.md:ssa kohdassa "Osallistujat mobiilidatalla".
 """
 import socket
 
@@ -41,4 +48,13 @@ if __name__ == "__main__":
     print(f"  Admin-paneeli (pida salassa):")
     print(f"    http://{ip}:{PORT}/admin/{ADMIN_TOKEN}")
     print("=" * 64)
-    uvicorn.run("app.main:app", host=HOST, port=PORT, reload=False)
+    print("  Kaikkien osallistujien pitaa olla samassa WiFi-verkossa kuin")
+    print("  tama kone. Jos joku on mobiilidatalla, katso README.md:")
+    print("  'Osallistujat mobiilidatalla' - tarvitaan julkinen tunneli.")
+    print("=" * 64)
+    # proxy_headers=True: jos sovellusta ajetaan tunnelin (cloudflared/ngrok)
+    # takana, tama saa FastAPI:n lukemaan X-Forwarded-Proto/-Host -otsikot
+    # oikein, jotta esim. QR-koodiin upotettu osoite ja https-skeema tulevat
+    # oikein. forwarded_allow_ips oletuksena "127.0.0.1" luottaa vain samalla
+    # koneella ajettavaan tunneliasiakkaaseen, ei ulkopuolisiin pyyntoihin.
+    uvicorn.run("app.main:app", host=HOST, port=PORT, reload=False, proxy_headers=True)
